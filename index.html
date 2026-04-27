@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Copa Mundial 2026</title>
+    <title>Copa Mundial 2026 - Portal Final</title>
     <style>
         :root { 
             --mex-green: #00ef00; --usa-blue: #007bff; --can-red: #ff0000; --neon: #00f2ff;
@@ -39,21 +39,20 @@
             background: linear-gradient(90deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.1) 100%);
             z-index: 1;
         }
-        .interactive-box:hover { transform: scale(1.02); z-index: 20; border-color: var(--neon); }
+        .interactive-box:hover { transform: scale(1.01); z-index: 20; border-color: var(--neon); }
 
         .border-mex:hover { border-color: var(--mex-green); box-shadow: 0 0 20px var(--mex-green); }
         .border-usa:hover { border-color: var(--usa-blue); box-shadow: 0 0 20px var(--usa-blue); }
         .border-can:hover { border-color: var(--can-red); box-shadow: 0 0 20px var(--can-red); }
 
         .btn-menu { height: 85px; margin-bottom: 12px; padding: 0 25px; }
-        .btn-menu h3 { margin: 0; font-size: 1.2rem; text-transform: uppercase; z-index: 2; }
+        .btn-menu h3 { margin: 0; font-size: 1.2rem; text-transform: uppercase; z-index: 2; letter-spacing: 1px; }
 
         .ball-icon {
             height: 110%; position: absolute; right: -15px;
-            opacity: 0.4; z-index: 2; pointer-events: none;
-            animation: spin 12s linear infinite;
+            opacity: 0.3; z-index: 2; pointer-events: none;
+            filter: grayscale(1);
         }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         /* --- CONTENEDORES DE VIDEO --- */
         .video-full-wrapper {
@@ -61,32 +60,30 @@
             overflow: hidden; margin: 20px 0; background: #fff; 
         }
         
-        /* Sección de Reels (Shorts) */
         .reels-wrapper {
             width: 100%; height: 450px; border: 2px solid #fff; border-radius: 15px;
             overflow: hidden; margin: 30px 0; background: #000;
         }
 
         @media (max-width: 768px) {
-            .video-full-wrapper { height: 450px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+            .video-full-wrapper { height: 450px; }
             .reels-wrapper { height: 350px; }
         }
         
         iframe { width: 100%; height: 100%; border: none; }
 
         .lower-buttons-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-        .btn-horizontal { height: 100px; justify-content: center; text-align: center; }
+        .btn-horizontal { height: 100px; justify-content: flex-start; padding-left: 25px; }
 
         .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .box-small { height: 180px; }
-        .tag { position: absolute; top: 10px; left: 10px; font-size: 0.7rem; background: #000; padding: 3px 10px; border: 1px solid #fff; z-index: 5; }
+        .box-small { height: 180px; justify-content: flex-start; padding-left: 25px; }
         
         .trophy-img { height: clamp(250px, 35vh, 380px); filter: drop-shadow(0 0 30px gold); display: block; margin: 0 auto; }
 
         .mexcanusa-banner {
             border: 3px solid var(--neon); background: rgba(0,0,0,0.9);
             padding: 30px; border-radius: 15px; display: flex; justify-content: center;
-            gap: 20px; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; margin-bottom: 50px;
+            gap: 20px; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; margin-top: 40px; margin-bottom: 50px;
         }
 
         .bg-cal { background-image: url('https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/Media1.jpg'); }
@@ -106,51 +103,53 @@
             
             <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px;">
                 <div class="menu-col">
-                    <a href="https://www.milenio.com/temas/mundial-2026" target="_parent" class="interactive-box btn-menu bg-cal border-mex" onmouseenter="playSfx()">
+                    <a href="https://www.milenio.com/futbol-internacional/mundial/calendario" target="_parent" class="interactive-box btn-menu bg-cal border-mex" onmouseenter="playSfx()">
                         <h3>CALENDARIO</h3>
                         <img src="https://cdnpublicidad.milenio.com/2025/PublicidadEditorial/05.Mayo/slider-yt/ProyectoMundial2026/Juego_vectores/balon.png" class="ball-icon">
                     </a>
-                    <a href="https://www.milenio.com/deportes" target="_parent" class="interactive-box btn-menu bg-est border-usa" onmouseenter="playSfx()">
+                    <a href="https://stage2-front.milenio.com/futbol-internacional/mundial/estadisticas" target="_parent" class="interactive-box btn-menu bg-est border-usa" onmouseenter="playSfx()">
                         <h3>ESTADÍSTICAS</h3>
                         <img src="https://cdnpublicidad.milenio.com/2025/PublicidadEditorial/05.Mayo/slider-yt/ProyectoMundial2026/Juego_vectores/balon.png" class="ball-icon">
                     </a>
-                    <a href="https://www.milenio.com/ultimas-noticias" target="_parent" class="interactive-box btn-menu bg-not border-can" onmouseenter="playSfx()">
+                    <a href="https://www.milenio.com/deportes/futbol-internacional/mundial" target="_parent" class="interactive-box btn-menu bg-not border-can" onmouseenter="playSfx()">
                         <h3>NOTICIAS</h3>
                         <img src="https://cdnpublicidad.milenio.com/2025/PublicidadEditorial/05.Mayo/slider-yt/ProyectoMundial2026/Juego_vectores/balon.png" class="ball-icon">
                     </a>
-                    <a href="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/index.html" target="_parent" class="interactive-box btn-menu bg-mun border-mex" onmouseenter="playSfx()">
+                    <a href="https://stage2-front.milenio.com/deportes/mundialito-milenio" target="_parent" class="interactive-box btn-menu bg-mun border-mex" onmouseenter="playSfx()">
                         <h3 style="color:#4f4">MUNDIALITO</h3>
                     </a>
                 </div>
                 <div style="display: flex; align-items: center;">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/e/ec/FIFA_World_Cup_Trophy.png" class="trophy-img">
+                    <img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/MUNDIALITO%20/LOGO26.pn" class="trophy-img">
                 </div>
             </div>
 
             <div class="video-full-wrapper">
-                <span class="tag" style="background: red;">VIDEOS</span>
                 <iframe src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/SliderVideo.html" scrolling="yes"></iframe>
             </div>
 
             <div class="lower-buttons-grid">
                 <a href="https://www.milenio.com/infografias" target="_parent" class="interactive-box btn-horizontal border-can" onmouseenter="playSfx()">
                     <h3>INFOGRAFÍA</h3>
-                    <img src="https://cdnpublicidad.milenio.com/2025/PublicidadEditorial/05.Mayo/slider-yt/ProyectoMundial2026/Juego_vectores/balon.png" class="ball-icon" style="height: 80%; opacity: 0.2;">
+                    <img src="https://cdnpublicidad.milenio.com/2025/PublicidadEditorial/05.Mayo/slider-yt/ProyectoMundial2026/Juego_vectores/balon.png" class="ball-icon">
                 </a>
                 <a href="https://www.milenio.com/temas/seleccion-mexicana" target="_parent" class="interactive-box btn-horizontal border-mex" onmouseenter="playSfx()">
                     <h3>LOS BALONES</h3>
-                    <img src="https://cdnpublicidad.milenio.com/2025/PublicidadEditorial/05.Mayo/slider-yt/ProyectoMundial2026/Juego_vectores/balon.png" class="ball-icon" style="height: 80%; opacity: 0.2;">
+                    <img src="https://cdnpublicidad.milenio.com/2025/PublicidadEditorial/05.Mayo/slider-yt/ProyectoMundial2026/Juego_vectores/balon.png" class="ball-icon">
                 </a>
             </div>
 
             <div class="reels-wrapper">
-                <span class="tag" style="background: #000;">REELS DEPORTES</span>
                 <iframe src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/Shorts/Milenio-Deportes/Short-Deportes.html"></iframe>
             </div>
 
             <div class="footer-grid">
-                <div class="interactive-box box-small border-usa" style="background-image: url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=500');" onmouseenter="playSfx()"><span class="tag">RAÍCES</span></div>
-                <div class="interactive-box box-small border-can" style="background-image: url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=500');" onmouseenter="playSfx()"><span class="tag">HISTÓRICO</span></div>
+                <a href="#" class="interactive-box box-small border-usa" style="background-image: url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=500');" onmouseenter="playSfx()">
+                    <h3>RAÍCES</h3>
+                </a>
+                <a href="#" class="interactive-box box-small border-can" style="background-image: url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=500');" onmouseenter="playSfx()">
+                    <h3>HISTÓRICO</h3>
+                </a>
             </div>
 
             <div class="mexcanusa-banner">
