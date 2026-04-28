@@ -12,6 +12,7 @@
         html, body { 
             margin: 0; padding: 0; width: 100%; min-height: 100vh; 
             background: #000; overflow-x: hidden; overflow-y: auto;
+            scroll-behavior: smooth;
         }
         body { font-family: 'Arial Black', sans-serif; color: #fff; -webkit-tap-highlight-color: transparent; }
 
@@ -22,10 +23,18 @@
         #ui { position: relative; z-index: 10; width: 100%; padding: 20px 5%; box-sizing: border-box; }
         .layout-container { max-width: 1000px; margin: 0 auto; position: relative; }
 
+        /* HEADER FIJO PARA EVITAR SALTOS */
         .main-header {
-            text-align: center; font-size: clamp(30px, 10vw, 60px);
-            text-transform: uppercase; -webkit-text-stroke: 1.5px #fff; color: transparent;
-            margin-bottom: 30px;
+            text-align: center; 
+            font-size: clamp(30px, 10vw, 60px);
+            text-transform: uppercase; 
+            -webkit-text-stroke: 1.5px #fff; 
+            color: transparent;
+            height: 100px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
         }
 
         /* --- CAJAS INTERACTIVAS --- */
@@ -57,19 +66,14 @@
             opacity: 0.3; z-index: 2; pointer-events: none; filter: grayscale(1);
         }
 
-        /* BANNER DE FUTBOLITO */
-        .bg-mun { 
-            background-image: url('https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/MUNDIALITO%20/futbolitobot.png'); 
-            background-size: cover; background-position: center; background-repeat: no-repeat;
-        }
+        .bg-mun { background-image: url('https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/MUNDIALITO%20/futbolitobot.png'); background-size: cover; background-position: center; }
 
-        /* Estructura Principal */
         .top-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; }
 
-        /* WRAPPERS DE CONTENIDO (IFRAMES) */
+        /* WRAPPERS DE CONTENIDO */
         .video-full-wrapper { 
             width: 100%; height: 500px; border: 2px solid #fff; border-radius: 15px; 
-            overflow: hidden; margin: 20px 0; background: transparent;
+            overflow: hidden; margin: 20px 0; background: #000; position: relative;
         }
         
         .reels-wrapper { 
@@ -79,7 +83,6 @@
 
         iframe { width: 100%; height: 100%; border: none; background: transparent; }
 
-        /* Cuadrículas Inferiores e Intermedias */
         .lower-buttons-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
         .btn-horizontal { height: 90px; justify-content: flex-start; padding-left: 25px; }
         
@@ -87,12 +90,8 @@
         .box-small { height: 150px; justify-content: center; text-align: center; }
         .box-small h3 { z-index: 2; font-size: 1.6rem; text-shadow: 2px 2px 10px #000; }
         
-        .trophy-img { 
-            height: clamp(200px, 30vh, 350px); filter: drop-shadow(0 0 25px gold); 
-            display: block; margin: 0 auto; 
-        }
+        .trophy-img { height: clamp(200px, 30vh, 350px); filter: drop-shadow(0 0 25px gold); display: block; margin: 0 auto; }
 
-        /* Fondos */
         .bg-cal { background-image: url('https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/1.png'); }
         .bg-est { background-image: url('https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/2.png'); }
         .bg-not { background-image: url('https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/3.png'); }
@@ -103,11 +102,8 @@
             gap: 15px; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; margin-top: 30px; margin-bottom: 40px;
         }
 
-        /* AJUSTE PARA MOBILE */
         @media (max-width: 768px) {
             .top-grid, .lower-buttons-grid, .footer-grid { grid-template-columns: 1fr; }
-            .trophy-img { height: 250px !important; margin: 10px auto !important; }
-            .btn-menu.bg-mun { height: 120px; background-position: 85% center; }
             .video-full-wrapper { height: 450px; }
             .reels-wrapper { height: 520px; }
         }
@@ -121,7 +117,6 @@
         <h1 class="main-header">COPA MUNDIAL</h1>
 
         <div class="layout-container">
-            
             <div class="top-grid">
                 <div class="menu-col">
                     <a href="https://www.milenio.com/futbol-internacional/mundial/calendario" target="_parent" class="interactive-box btn-menu bg-cal border-mex" onmouseenter="playSfx()">
@@ -144,7 +139,7 @@
             </div>
 
             <div class="video-full-wrapper">
-                <iframe id="video-frame" src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/SliderVideo.html" scrolling="yes"></iframe>
+                <iframe id="video-frame" src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/SliderVideo.html" scrolling="no" allow="autoplay; fullscreen"></iframe>
             </div>
 
             <div class="lower-buttons-grid">
@@ -184,14 +179,21 @@
     </div>
 
     <script>
-        // Función para actualizar el iframe principal
+        // CONTROL DE NAVEGACIÓN Y SCROLL
         function changeSection(section) {
+            const currentScroll = window.scrollY; 
             const frame = document.getElementById('video-frame');
+            
             if(section === 'raices') {
                 frame.src = "https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/SliderVideo.html#raices"; 
             } else if(section === 'historico') {
                 frame.src = "https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/SliderVideo.html#historico";
             }
+
+            // Bloqueamos el salto de página
+            setTimeout(() => {
+                window.scrollTo({ top: currentScroll, behavior: 'instant' });
+            }, 10);
         }
 
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -214,23 +216,14 @@
         let renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.getElementById('canvas-container').appendChild(renderer.domElement);
-
         const geo = new THREE.BufferGeometry();
         const pos = [];
-        for(let i=0; i<2000; i++) {
-            pos.push((Math.random()-0.5)*100, (Math.random()-0.5)*100, (Math.random()-0.5)*100);
-        }
+        for(let i=0; i<2000; i++) pos.push((Math.random()-0.5)*100, (Math.random()-0.5)*100, (Math.random()-0.5)*100);
         geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
-        const mat = new THREE.PointsMaterial({ color: 0x00f2ff, size: 0.1 });
-        const points = new THREE.Points(geo, mat);
+        const points = new THREE.Points(geo, new THREE.PointsMaterial({ color: 0x00f2ff, size: 0.1 }));
         scene.add(points);
-
         camera.position.z = 30;
-        function animate() {
-            requestAnimationFrame(animate);
-            points.rotation.y += 0.0008;
-            renderer.render(scene, camera);
-        }
+        function animate() { requestAnimationFrame(animate); points.rotation.y += 0.0008; renderer.render(scene, camera); }
         animate();
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
