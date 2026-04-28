@@ -15,7 +15,10 @@
         }
         body { font-family: 'Arial Black', sans-serif; color: #fff; -webkit-tap-highlight-color: transparent; }
 
+        /* Fondo de Partículas */
         #canvas-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+
+        /* Interfaz de Usuario */
         #ui { position: relative; z-index: 10; width: 100%; padding: 20px 5%; box-sizing: border-box; }
         .layout-container { max-width: 1000px; margin: 0 auto; position: relative; }
 
@@ -23,23 +26,6 @@
             text-align: center; font-size: clamp(30px, 10vw, 60px);
             text-transform: uppercase; -webkit-text-stroke: 1.5px #fff; color: transparent;
             margin-bottom: 30px;
-        }
-
-        /* --- MENÚ DE PESTAÑAS (ESTILO IMAGEN) --- */
-        .nav-tabs-container {
-            display: flex; gap: 30px; padding: 0 10px 15px 10px;
-        }
-        .tab-link {
-            background: none; border: none; color: #555;
-            font-family: 'Arial Black', sans-serif; font-size: 1.2rem;
-            cursor: pointer; text-transform: uppercase; padding: 5px 0;
-            transition: 0.3s; position: relative;
-        }
-        /* Pestaña activa: Texto rojo y línea roja */
-        .tab-link.active { color: var(--can-red); }
-        .tab-link.active::after {
-            content: ''; position: absolute; bottom: -5px; left: 0; 
-            width: 100%; height: 4px; background: var(--can-red);
         }
 
         /* --- CAJAS INTERACTIVAS --- */
@@ -71,22 +57,21 @@
             opacity: 0.3; z-index: 2; pointer-events: none; filter: grayscale(1);
         }
 
+        /* BANNER DE FUTBOLITO */
         .bg-mun { 
             background-image: url('https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/MUNDIALITO%20/futbolitobot.png'); 
-            background-size: cover; background-position: center;
+            background-size: cover; background-position: center; background-repeat: no-repeat;
         }
 
+        /* Estructura Principal */
         .top-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; }
 
-        /* WRAPPER PRINCIPAL DINÁMICO (Cambia el borde según la pestaña) */
+        /* WRAPPERS DE CONTENIDO (IFRAMES) */
         .video-full-wrapper { 
             width: 100%; height: 500px; border: 2px solid #fff; border-radius: 15px; 
             overflow: hidden; margin: 20px 0; background: transparent;
-            transition: border-color 0.4s;
         }
-        /* Borde rojo cuando RAÍCES está activo */
-        .video-full-wrapper.active-red { border-color: var(--can-red); box-shadow: 0 0 15px rgba(255,0,0,0.3); }
-
+        
         .reels-wrapper { 
             width: 100%; height: 620px; border: 2px solid #fff; border-radius: 15px; 
             overflow: hidden; margin: 30px 0; background: transparent;
@@ -94,14 +79,17 @@
 
         iframe { width: 100%; height: 100%; border: none; background: transparent; }
 
+        /* AJUSTE PARA MOBILE */
         @media (max-width: 768px) {
             .top-grid { grid-template-columns: 1fr; }
             .trophy-img { height: 250px !important; margin: 10px auto !important; }
-            .video-full-wrapper { height: 400px; }
-            .nav-tabs-container { gap: 15px; justify-content: center; }
-            .tab-link { font-size: 0.9rem; }
+            .btn-menu.bg-mun { height: 120px; background-position: 85% center; }
+            .video-full-wrapper { height: 450px; }
+            .reels-wrapper { height: 520px; }
+            .lower-buttons-grid, .footer-grid { grid-template-columns: 1fr; }
         }
 
+        /* Cuadrículas Inferiores */
         .lower-buttons-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
         .btn-horizontal { height: 90px; justify-content: flex-start; padding-left: 25px; }
         .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
@@ -112,6 +100,7 @@
             display: block; margin: 0 auto; 
         }
 
+        /* Fondos */
         .bg-cal { background-image: url('https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/1.png'); }
         .bg-est { background-image: url('https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/2.png'); }
         .bg-not { background-image: url('https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/3.png'); }
@@ -134,41 +123,35 @@
             
             <div class="top-grid">
                 <div class="menu-col">
-                    <a href="https://www.milenio.com/futbol-internacional/mundial/calendario" target="_parent" class="interactive-box btn-menu bg-cal border-mex">
+                    <a href="https://www.milenio.com/futbol-internacional/mundial/calendario" target="_parent" class="interactive-box btn-menu bg-cal border-mex" onmouseenter="playSfx()">
                         <h3>CALENDARIO</h3>
                         <img src="https://cdnpublicidad.milenio.com/2025/PublicidadEditorial/05.Mayo/slider-yt/ProyectoMundial2026/Juego_vectores/balon.png" class="ball-icon">
                     </a>
-                    <a href="https://stage2-front.milenio.com/futbol-internacional/mundial/estadisticas" target="_parent" class="interactive-box btn-menu bg-est border-usa">
+                    <a href="https://stage2-front.milenio.com/futbol-internacional/mundial/estadisticas" target="_parent" class="interactive-box btn-menu bg-est border-usa" onmouseenter="playSfx()">
                         <h3>ESTADÍSTICAS</h3>
                         <img src="https://cdnpublicidad.milenio.com/2025/PublicidadEditorial/05.Mayo/slider-yt/ProyectoMundial2026/Juego_vectores/balon.png" class="ball-icon">
                     </a>
-                    <a href="https://www.milenio.com/deportes/futbol-internacional/mundial" target="_parent" class="interactive-box btn-menu bg-not border-can">
+                    <a href="https://www.milenio.com/deportes/futbol-internacional/mundial" target="_parent" class="interactive-box btn-menu bg-not border-can" onmouseenter="playSfx()">
                         <h3>NOTICIAS</h3>
                         <img src="https://cdnpublicidad.milenio.com/2025/PublicidadEditorial/05.Mayo/slider-yt/ProyectoMundial2026/Juego_vectores/balon.png" class="ball-icon">
                     </a>
-                    <a href="https://stage2-front.milenio.com/deportes/mundialito-milenio" target="_parent" class="interactive-box btn-menu bg-mun border-mex"></a>
+                    <a href="https://stage2-front.milenio.com/deportes/mundialito-milenio" target="_parent" class="interactive-box btn-menu bg-mun border-mex" onmouseenter="playSfx()"></a>
                 </div>
-                <div>
+                <div style="display: flex; align-items: center; justify-content: center;">
                     <img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/copa.png" class="trophy-img">
                 </div>
             </div>
 
-            <div class="nav-tabs-container">
-                <button class="tab-link active" onclick="changeSection('videos', this)">Videos</button>
-                <button class="tab-link" onclick="changeSection('raices', this)">Raíces</button>
-                <button class="tab-link" onclick="changeSection('historico', this)">Histórico</button>
-            </div>
-
-            <div class="video-full-wrapper" id="main-frame-container">
-                <iframe id="main-iframe" src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/SliderVideo.html"></iframe>
+            <div class="video-full-wrapper">
+                <iframe src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/SliderVideo.html" scrolling="yes"></iframe>
             </div>
 
             <div class="lower-buttons-grid">
-                <a href="https://www.milenio.com/infografias" target="_parent" class="interactive-box btn-horizontal border-can">
+                <a href="https://www.milenio.com/infografias" target="_parent" class="interactive-box btn-horizontal border-can" onmouseenter="playSfx()">
                     <h3>INFOGRAFÍA</h3>
                     <img src="https://cdnpublicidad.milenio.com/2025/PublicidadEditorial/05.Mayo/slider-yt/ProyectoMundial2026/Juego_vectores/balon.png" class="ball-icon">
                 </a>
-                <a href="https://www.milenio.com/temas/seleccion-mexicana" target="_parent" class="interactive-box btn-horizontal border-mex">
+                <a href="https://www.milenio.com/temas/seleccion-mexicana" target="_parent" class="interactive-box btn-horizontal border-mex" onmouseenter="playSfx()">
                     <h3>LOS BALONES</h3>
                     <img src="https://cdnpublicidad.milenio.com/2025/PublicidadEditorial/05.Mayo/slider-yt/ProyectoMundial2026/Juego_vectores/balon.png" class="ball-icon">
                 </a>
@@ -179,10 +162,10 @@
             </div>
 
             <div class="footer-grid">
-                <a href="#" class="interactive-box box-small border-usa" style="background-image: url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=500');">
+                <a href="#" class="interactive-box box-small border-usa" style="background-image: url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=500');" onmouseenter="playSfx()">
                     <h3>RAÍCES</h3>
                 </a>
-                <a href="#" class="interactive-box box-small border-can" style="background-image: url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=500');">
+                <a href="#" class="interactive-box box-small border-can" style="background-image: url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=500');" onmouseenter="playSfx()">
                     <h3>HISTÓRICO</h3>
                 </a>
             </div>
@@ -194,25 +177,15 @@
     </div>
 
     <script>
-        function changeSection(section, btn) {
-            const iframe = document.getElementById('main-iframe');
-            const container = document.getElementById('main-frame-container');
-            
-            // 1. Cambiar estado de los botones
-            document.querySelectorAll('.tab-link').forEach(l => l.classList.remove('active'));
-            btn.classList.add('active');
-
-            // 2. Lógica de cambio de contenido y estilo
-            if(section === 'raices') {
-                iframe.src = "https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/SliderVideo.html"; // Aquí pondrías el link de Raíces
-                container.classList.add('active-red');
-            } else if(section === 'historico') {
-                iframe.src = "https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/SliderVideo.html"; // Aquí el de Histórico
-                container.classList.remove('active-red');
-            } else {
-                iframe.src = "https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/SliderVideo.html";
-                container.classList.remove('active-red');
-            }
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playSfx() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.05);
         }
     </script>
 
@@ -224,18 +197,27 @@
         let renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.getElementById('canvas-container').appendChild(renderer.domElement);
+
         const geo = new THREE.BufferGeometry();
         const pos = [];
-        for(let i=0; i<2000; i++) { pos.push((Math.random()-0.5)*100, (Math.random()-0.5)*100, (Math.random()-0.5)*100); }
+        for(let i=0; i<2000; i++) {
+            pos.push((Math.random()-0.5)*100, (Math.random()-0.5)*100, (Math.random()-0.5)*100);
+        }
         geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
         const mat = new THREE.PointsMaterial({ color: 0x00f2ff, size: 0.1 });
         const points = new THREE.Points(geo, mat);
         scene.add(points);
+
         camera.position.z = 30;
-        function animate() { requestAnimationFrame(animate); points.rotation.y += 0.0008; renderer.render(scene, camera); }
+        function animate() {
+            requestAnimationFrame(animate);
+            points.rotation.y += 0.0008;
+            renderer.render(scene, camera);
+        }
         animate();
         window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix();
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
     </script>
