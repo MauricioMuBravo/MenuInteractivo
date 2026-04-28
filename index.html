@@ -11,7 +11,9 @@
         
         html, body { 
             margin: 0; padding: 0; width: 100%; min-height: 100vh; 
-            background: #000; overflow-x: hidden; overflow-y: auto;
+            background: #000; overflow-x: hidden; 
+            /* Permitimos el scroll normal pero suavizamos el movimiento */
+            overflow-y: auto; 
             scroll-behavior: smooth;
         }
         body { font-family: 'Arial Black', sans-serif; color: #fff; -webkit-tap-highlight-color: transparent; }
@@ -23,18 +25,10 @@
         #ui { position: relative; z-index: 10; width: 100%; padding: 20px 5%; box-sizing: border-box; }
         .layout-container { max-width: 1000px; margin: 0 auto; position: relative; }
 
-        /* HEADER FIJO PARA EVITAR SALTOS */
         .main-header {
-            text-align: center; 
-            font-size: clamp(30px, 10vw, 60px);
-            text-transform: uppercase; 
-            -webkit-text-stroke: 1.5px #fff; 
-            color: transparent;
-            height: 100px; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
+            text-align: center; font-size: clamp(30px, 10vw, 60px);
+            text-transform: uppercase; -webkit-text-stroke: 1.5px #fff; color: transparent;
+            margin-bottom: 30px;
         }
 
         /* --- CAJAS INTERACTIVAS --- */
@@ -70,15 +64,18 @@
 
         .top-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; }
 
-        /* WRAPPERS DE CONTENIDO */
+        /* WRAPPERS DE CONTENIDO - AQUÍ ESTÁ EL TRUCO PARA QUE NO SALTE */
         .video-full-wrapper { 
             width: 100%; height: 500px; border: 2px solid #fff; border-radius: 15px; 
-            overflow: hidden; margin: 20px 0; background: #000; position: relative;
+            overflow: hidden; margin: 20px 0; background: #000;
+            /* Esto evita que al hacer clic el video se pegue al tope de la pantalla */
+            scroll-margin-top: 150px; 
         }
         
         .reels-wrapper { 
             width: 100%; height: 620px; border: 2px solid #fff; border-radius: 15px; 
             overflow: hidden; margin: 30px 0; background: transparent;
+            scroll-margin-top: 50px;
         }
 
         iframe { width: 100%; height: 100%; border: none; background: transparent; }
@@ -104,7 +101,7 @@
 
         @media (max-width: 768px) {
             .top-grid, .lower-buttons-grid, .footer-grid { grid-template-columns: 1fr; }
-            .video-full-wrapper { height: 450px; }
+            .video-full-wrapper { height: 450px; scroll-margin-top: 20px; }
             .reels-wrapper { height: 520px; }
         }
     </style>
@@ -138,8 +135,8 @@
                 </div>
             </div>
 
-            <div class="video-full-wrapper">
-                <iframe id="video-frame" src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/SliderVideo.html" scrolling="no" allow="autoplay; fullscreen"></iframe>
+            <div class="video-full-wrapper" id="video-section">
+                <iframe id="video-frame" src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/SliderVideo.html" allow="autoplay; fullscreen"></iframe>
             </div>
 
             <div class="lower-buttons-grid">
@@ -179,10 +176,9 @@
     </div>
 
     <script>
-        // CONTROL DE NAVEGACIÓN Y SCROLL
         function changeSection(section) {
-            const currentScroll = window.scrollY; 
             const frame = document.getElementById('video-frame');
+            const videoSection = document.getElementById('video-section');
             
             if(section === 'raices') {
                 frame.src = "https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/SliderVideo.html#raices"; 
@@ -190,10 +186,9 @@
                 frame.src = "https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/SliderVideo.html#historico";
             }
 
-            // Bloqueamos el salto de página
-            setTimeout(() => {
-                window.scrollTo({ top: currentScroll, behavior: 'instant' });
-            }, 10);
+            // En lugar de forzar una posición fija, le decimos que se desplace 
+            // a la sección del video suavemente respetando el margen superior.
+            videoSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
