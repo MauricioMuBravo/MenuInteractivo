@@ -62,21 +62,26 @@
 
         .top-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; }
 
-        /* WRAPPERS DE CONTENIDO - SOLUCIÓN PARA FIJAR LA VISTA */
+        /* WRAPPER VIDEO SUPERIOR */
         .video-full-wrapper { 
             width: 100%; height: 500px; border: 2px solid #fff; border-radius: 15px; 
             overflow: hidden; margin: 20px 0; background: #000;
-            position: relative;
-            contain: layout; /* Aísla el contenido para que no afecte al scroll padre */
+            position: relative; contain: layout;
         }
         
-        #video-frame { 
-            width: 100%; height: 100%; border: none; background: transparent;
-        }
-
+        /* CORRECCIÓN REELS: Forzamos la vista completa */
         .reels-wrapper { 
             width: 100%; height: 620px; border: 2px solid #fff; border-radius: 15px; 
-            overflow: hidden; margin: 30px 0; background: transparent;
+            overflow: hidden; margin: 30px 0; background: #000;
+            position: relative; z-index: 20; /* Prioridad sobre las partículas */
+        }
+
+        .reels-wrapper iframe, .video-full-wrapper iframe {
+            width: 100% !important;
+            height: 100% !important;
+            border: none;
+            display: block;
+            background: transparent;
         }
 
         .lower-buttons-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
@@ -135,13 +140,7 @@
             </div>
 
             <div class="video-full-wrapper">
-                <iframe 
-                    id="video-frame" 
-                    src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/SliderVideo.html" 
-                    allow="autoplay; fullscreen"
-                    loading="eager"
-                    tabindex="-1">
-                </iframe>
+                <iframe id="video-frame" src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/SliderVideo.html" allow="autoplay; fullscreen" tabindex="-1"></iframe>
             </div>
 
             <div class="lower-buttons-grid">
@@ -156,7 +155,7 @@
             </div>
 
             <div class="reels-wrapper">
-                <iframe src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/Shorts/MIX/Vid-vertical-MMB.html"></iframe>
+                <iframe src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/Shorts/MIX/Vid-vertical-MMB.html" loading="lazy"></iframe>
             </div>
 
             <div class="footer-grid">
@@ -181,41 +180,19 @@
     </div>
 
     <script>
-        // SCRIPT PARA BLOQUEAR EL SALTO AL HACER CLIC
-        let userScrollPos = window.scrollY;
+        let currentScroll = window.scrollY;
+        window.addEventListener('scroll', () => { currentScroll = window.scrollY; }, { passive: true });
 
-        // Registramos la posición del scroll constantemente
-        window.addEventListener('scroll', () => {
-            userScrollPos = window.scrollY;
-        }, { passive: true });
-
-        // Si el iframe intenta forzar un scroll hacia arriba, lo bloqueamos
-        const iframe = document.getElementById('video-frame');
-        
-        // Esta función se activa cuando cambias de sección manualmente
         function changeSection(section) {
+            const frame = document.getElementById('video-frame');
             if(section === 'raices') {
-                iframe.src = "https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/SliderVideo.html#raices"; 
+                frame.src = "https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/SliderVideo.html#raices"; 
             } else if(section === 'historico') {
-                iframe.src = "https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/SliderVideo.html#historico";
+                frame.src = "https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/SliderVideo.html#historico";
             }
-            
-            // Forzamos a que la pantalla se quede donde estaba
-            setTimeout(() => {
-                window.scrollTo({ top: userScrollPos, behavior: 'instant' });
-            }, 50);
+            setTimeout(() => { window.scrollTo({ top: currentScroll, behavior: 'instant' }); }, 50);
         }
 
-        // Bloqueo preventivo de saltos por foco automático
-        window.addEventListener('blur', () => {
-            if (document.activeElement === iframe) {
-                setTimeout(() => {
-                    window.scrollTo({ top: userScrollPos, behavior: 'instant' });
-                }, 0);
-            }
-        });
-
-        // SFX Simple
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         function playSfx() {
             if (audioCtx.state === 'suspended') audioCtx.resume();
