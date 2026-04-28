@@ -79,21 +79,13 @@
 
         iframe { width: 100%; height: 100%; border: none; background: transparent; }
 
-        /* AJUSTE PARA MOBILE */
-        @media (max-width: 768px) {
-            .top-grid { grid-template-columns: 1fr; }
-            .trophy-img { height: 250px !important; margin: 10px auto !important; }
-            .btn-menu.bg-mun { height: 120px; background-position: 85% center; }
-            .video-full-wrapper { height: 450px; }
-            .reels-wrapper { height: 520px; }
-            .lower-buttons-grid, .footer-grid { grid-template-columns: 1fr; }
-        }
-
-        /* Cuadrículas Inferiores */
+        /* Cuadrículas Inferiores e Intermedias */
         .lower-buttons-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
         .btn-horizontal { height: 90px; justify-content: flex-start; padding-left: 25px; }
+        
         .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .box-small { height: 150px; justify-content: flex-start; padding-left: 25px; }
+        .box-small { height: 150px; justify-content: center; text-align: center; }
+        .box-small h3 { z-index: 2; font-size: 1.6rem; text-shadow: 2px 2px 10px #000; }
         
         .trophy-img { 
             height: clamp(200px, 30vh, 350px); filter: drop-shadow(0 0 25px gold); 
@@ -109,6 +101,15 @@
             border: 3px solid var(--neon); background: rgba(0,0,0,0.9);
             padding: 20px; border-radius: 15px; display: flex; justify-content: center;
             gap: 15px; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; margin-top: 30px; margin-bottom: 40px;
+        }
+
+        /* AJUSTE PARA MOBILE */
+        @media (max-width: 768px) {
+            .top-grid, .lower-buttons-grid, .footer-grid { grid-template-columns: 1fr; }
+            .trophy-img { height: 250px !important; margin: 10px auto !important; }
+            .btn-menu.bg-mun { height: 120px; background-position: 85% center; }
+            .video-full-wrapper { height: 450px; }
+            .reels-wrapper { height: 520px; }
         }
     </style>
 </head>
@@ -143,7 +144,7 @@
             </div>
 
             <div class="video-full-wrapper">
-                <iframe src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/SliderVideo.html" scrolling="yes"></iframe>
+                <iframe id="video-frame" src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/SliderVideo.html" scrolling="yes"></iframe>
             </div>
 
             <div class="lower-buttons-grid">
@@ -162,12 +163,18 @@
             </div>
 
             <div class="footer-grid">
-                <a href="#" class="interactive-box box-small border-usa" style="background-image: url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=500');" onmouseenter="playSfx()">
+                <div class="interactive-box box-small border-usa" 
+                     style="background-image: url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=500');" 
+                     onmouseenter="playSfx()"
+                     onclick="changeSection('raices')">
                     <h3>RAÍCES</h3>
-                </a>
-                <a href="#" class="interactive-box box-small border-can" style="background-image: url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=500');" onmouseenter="playSfx()">
+                </div>
+                <div class="interactive-box box-small border-can" 
+                     style="background-image: url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=500');" 
+                     onmouseenter="playSfx()"
+                     onclick="changeSection('historico')">
                     <h3>HISTÓRICO</h3>
-                </a>
+                </div>
             </div>
 
             <div class="mexcanusa-banner">
@@ -177,6 +184,16 @@
     </div>
 
     <script>
+        // Función para actualizar el iframe principal
+        function changeSection(section) {
+            const frame = document.getElementById('video-frame');
+            if(section === 'raices') {
+                frame.src = "https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/SliderVideo.html#raices"; 
+            } else if(section === 'historico') {
+                frame.src = "https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/SliderVideo.html#historico";
+            }
+        }
+
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         function playSfx() {
             if (audioCtx.state === 'suspended') audioCtx.resume();
