@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mundial 2026 Milenio - Portal Completo</title>
+    <title>Mundialito Milenio 2026 - Master Full</title>
     <style>
         :root { 
-            --mex-green: #00ef00; --usa-blue: #007bff; --can-red: #ff0000; --neon: #00f2ff;
+            --mex-green: #00ef00; --usa-blue: #007bff; --can-red: #ff0000; --neon-cyan: #00f2ff;
         }
         
         html, body { 
@@ -16,80 +16,110 @@
         }
 
         #canvas-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
-        #ui { position: relative; z-index: 10; width: 100%; max-width: 900px; margin: 0 auto; padding: 20px; box-sizing: border-box; perspective: 1200px; }
+        #ui { position: relative; z-index: 10; width: 100%; max-width: 950px; margin: 0 auto; padding: 20px; box-sizing: border-box; }
 
-        .main-header-img { display: block; width: 100%; height: auto; margin-bottom: 20px; }
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin-bottom: 30px; }
+        .main-header-img { display: block; width: 100%; height: auto; margin-bottom: 30px; filter: drop-shadow(0 0 10px rgba(0,242,255,0.3)); }
+        
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin-bottom: 40px; perspective: 1200px; }
 
-        /* --- TARJETA CON TRIPLE MARCO --- */
-        .card {
-            background: rgba(15, 15, 15, 0.8);
-            border: 2px solid rgba(255, 255, 255, 0.15);
-            border-radius: 12px;
-            padding: 20px 10px;
-            text-align: center;
-            text-decoration: none;
-            color: #fff;
-            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s, box-shadow 0.3s;
-            backdrop-filter: blur(10px);
+        /* --- TRIPLE MARCO GENERAL --- */
+        .card-wrapper, .game-wrapper {
+            position: relative;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .card-wrapper { padding: 18px; }
+        .game-wrapper { padding: 20px; margin-bottom: 40px; }
+
+        .neon-frame {
+            position: absolute; border-style: solid; border-radius: 22px;
+            pointer-events: none; opacity: 0.2; transition: all 0.4s ease;
+        }
+
+        .outer-f { inset: 0; border-width: 2px; border-color: #fff; }
+        .mid-f { inset: 7px; border-width: 2px; border-color: #fff; }
+        .inner-f { inset: 14px; border-width: 2px; border-color: #fff; }
+
+        .trace-svg {
+            position: absolute; inset: 7px; 
+            width: calc(100% - 14px); height: calc(100% - 14px);
+            fill: none; pointer-events: none; z-index: 5; opacity: 0;
+            backface-visibility: hidden;
+        }
+
+        .trace-svg rect {
+            width: 100%; height: 100%; rx: 18px; ry: 18px;
+            stroke-width: 3px; stroke-dasharray: 70 1000;
+        }
+
+        @keyframes trace-anim { to { stroke-dashoffset: -1100; } }
+
+        /* --- CONTENIDO DE TARJETAS --- */
+        .card-content {
+            background: rgba(10, 10, 10, 0.95);
+            border-radius: 12px; padding: 25px 15px;
+            text-align: center; text-decoration: none; color: #fff;
             display: flex; flex-direction: column; align-items: center;
-            position: relative; transform-style: preserve-3d;
-            -webkit-tap-highlight-color: transparent;
+            position: relative; z-index: 2; backdrop-filter: blur(5px);
+            backface-visibility: hidden;
         }
 
-        /* Marcos de remarcado externo */
-        .card::before, .card::after {
-            content: ''; position: absolute; border-radius: 14px; border: 2px solid transparent;
-            pointer-events: none; opacity: 0; transition: all 0.4s ease; transform: translateZ(-5px);
-        }
-        .card::before { inset: -6px; } 
-        .card::after { inset: -12px; }
-
-        /* Giro 360 y Activación */
-        .card:hover, .card:active { transform: scale(1.05) rotateY(360deg); z-index: 50; }
-        .card:hover::before, .card:hover::after, .card:active::before, .card:active::after { opacity: 1; }
-
-        /* Colores por columna */
-        .grid-3 a:nth-child(3n+1):hover, .grid-3 a:nth-child(3n+1):active { border-color: var(--mex-green); box-shadow: 0 0 20px var(--mex-green); }
-        .grid-3 a:nth-child(3n+1):hover::before, .grid-3 a:nth-child(3n+1):active::before { border-color: var(--mex-green); }
-        .grid-3 a:nth-child(3n+1):hover::after, .grid-3 a:nth-child(3n+1):active::after { border-color: rgba(0, 239, 0, 0.3); }
-
-        .grid-3 a:nth-child(3n+2):hover, .grid-3 a:nth-child(3n+2):active { border-color: var(--usa-blue); box-shadow: 0 0 20px var(--usa-blue); }
-        .grid-3 a:nth-child(3n+2):hover::before, .grid-3 a:nth-child(3n+2):active::before { border-color: var(--usa-blue); }
-        .grid-3 a:nth-child(3n+2):hover::after, .grid-3 a:nth-child(3n+2):active::after { border-color: rgba(0, 123, 255, 0.3); }
-
-        .grid-3 a:nth-child(3n+3):hover, .grid-3 a:nth-child(3n+3):active { border-color: var(--can-red); box-shadow: 0 0 20px var(--can-red); }
-        .grid-3 a:nth-child(3n+3):hover::before, .grid-3 a:nth-child(3n+3):active::before { border-color: var(--can-red); }
-        .grid-3 a:nth-child(3n+3):hover::after, .grid-3 a:nth-child(3n+3):active::after { border-color: rgba(255, 0, 0, 0.3); }
-
-        .card-label { font-size: 0.75rem; font-weight: bold; text-transform: uppercase; margin-bottom: 10px; }
-        .card-icon { width: 50px; height: 50px; margin-bottom: 10px; }
-        .card-desc { font-size: 0.6rem; opacity: 0.7; line-height: 1.2; }
-
-        /* FUTBOLITO */
+        /* --- CONTENIDO DEL JUEGO (VERDE) --- */
         .futbolito-box {
-            width: 100%; min-height: 250px;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.2)), url('https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/MUNDIALITO%20/futbolitobot.png');
-            background-size: cover; border-radius: 15px; border: 2px solid rgba(255,255,255,0.2);
-            margin-bottom: 35px; padding: 30px; display: flex; flex-direction: column; justify-content: flex-end; text-decoration: none; color: #fff;
-            transition: 0.4s; transform-style: preserve-3d;
+            width: 100%; min-height: 280px;
+            background: linear-gradient(to top, #000, transparent), url('https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/MUNDIALITO%20/futbolitobot.png');
+            background-size: cover; background-position: center; border-radius: 12px;
+            display: flex; flex-direction: column; justify-content: flex-end;
+            text-decoration: none; color: #fff; box-sizing: border-box; padding: 30px;
+            position: relative; z-index: 2; backface-visibility: hidden;
         }
-        .futbolito-box:hover { border-color: var(--can-red); box-shadow: 0 0 30px rgba(255,0,0,0.4); }
-        .btn-juega { background: #ff0000; color: #fff; padding: 12px 30px; border-radius: 50px; font-weight: bold; margin-top: 15px; width: fit-content; }
 
-        /* VIDEOS & REELS */
-        .section-header { margin: 20px 0 15px; display: flex; align-items: center; }
-        .tab.active { color: var(--neon); border-bottom: 2px solid var(--neon); font-weight: bold; padding-bottom: 5px; }
-        .content-wrapper { width: 100%; border-radius: 15px; overflow: hidden; border: 1px solid rgba(255,255,255,0.2); margin-bottom: 40px; background: #000; }
-        .video-h { height: 550px; } 
-        .reels-h { height: 680px; }
-        iframe { width: 100% !important; height: 100% !important; border: none; }
+        /* ACTIVACIÓN DEL GIRO */
+        .card-wrapper:hover, .card-wrapper:active, .game-wrapper:hover, .game-wrapper:active { 
+            transform: scale(1.05) rotateY(360deg); z-index: 100; 
+        }
+        
+        .card-wrapper:hover .neon-frame, .game-wrapper:hover .neon-frame,
+        .card-wrapper:active .neon-frame, .game-wrapper:active .neon-frame { opacity: 1; }
+        
+        .card-wrapper:hover .trace-svg, .game-wrapper:hover .trace-svg,
+        .card-wrapper:active .trace-svg, .game-wrapper:active .trace-svg { opacity: 1; }
+
+        .card-wrapper:hover .trace-svg rect, .game-wrapper:hover .trace-svg rect,
+        .card-wrapper:active .trace-svg rect, .game-wrapper:active .trace-svg rect { animation: trace-anim 3s linear infinite; }
+
+        /* COLORES DINÁMICOS */
+        /* Verde (Juego y Columna 1) */
+        .game-wrapper:hover .neon-frame, .card-wrapper:nth-child(3n+1):hover .neon-frame { border-color: var(--mex-green); box-shadow: 0 0 15px var(--mex-green); }
+        .game-wrapper .trace-svg rect, .card-wrapper:nth-child(3n+1) .trace-svg rect { stroke: var(--mex-green); filter: drop-shadow(0 0 8px var(--mex-green)); }
+
+        /* Azul (Columna 2) */
+        .card-wrapper:nth-child(3n+2):hover .neon-frame { border-color: var(--usa-blue); box-shadow: 0 0 15px var(--usa-blue); }
+        .card-wrapper:nth-child(3n+2) .trace-svg rect { stroke: var(--usa-blue); filter: drop-shadow(0 0 8px var(--usa-blue)); }
+
+        /* Rojo (Columna 3) */
+        .card-wrapper:nth-child(3n+3):hover .neon-frame { border-color: var(--can-red); box-shadow: 0 0 15px var(--can-red); }
+        .card-wrapper:nth-child(3n+3) .trace-svg rect { stroke: var(--can-red); filter: drop-shadow(0 0 8px var(--can-red)); }
+
+        .card-label { font-size: 1rem; font-weight: bold; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 1px; }
+        .card-icon { width: 55px; height: 55px; margin-bottom: 12px; }
+        .card-desc { font-size: 0.75rem; opacity: 0.7; line-height: 1.3; }
+
+        .btn-juega { background: #ff0000; color: #fff; padding: 12px 35px; border-radius: 50px; font-weight: bold; width: fit-content; margin-top: 15px; box-shadow: 0 0 15px rgba(255,0,0,0.5); }
+
+        .section-title { font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; color: var(--neon-cyan); text-shadow: 0 0 10px var(--neon-cyan); }
+        .video-container { width: 100%; border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.2); background: #000; margin-bottom: 40px; }
+        .h-video { height: 500px; }
+        .h-reels { height: 650px; }
+        iframe { width: 100%; height: 100%; border: none; }
 
         @media (max-width: 768px) {
-            .grid-3 { grid-template-columns: 1fr; gap: 40px; }
-            .card:active { transform: scale(1.02) rotateY(180deg); }
-            .video-h { height: 350px; }
-            .reels-h { height: 600px; }
+            .grid-3 { grid-template-columns: 1fr; gap: 30px; perspective: 1000px; }
+            .h-video { height: 300px; }
+            .h-reels { height: 550px; }
+            .futbolito-box { min-height: 220px; }
         }
     </style>
 </head>
@@ -100,81 +130,88 @@
     <div id="ui">
         <img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/MAPAYBALON.png" class="main-header-img">
 
-        <!-- BLOQUE 1 -->
         <div class="grid-3">
-            <a href="https://www.milenio.com/futbol-internacional/mundial/calendario" class="card" onmouseenter="playSfx()" ontouchstart="playSfx()">
-                <span class="card-label">Calendario</span>
-                <img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/1.png" class="card-icon">
-                <span class="card-desc">Sedes y programación oficial...</span>
-            </a>
-            <a href="https://stage2-front.milenio.com/futbol-internacional/mundial/estadisticas" class="card" onmouseenter="playSfx()" ontouchstart="playSfx()">
-                <span class="card-label">Estadísticas</span>
-                <img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/2.png" class="card-icon">
-                <span class="card-desc">Números y data en tiempo real...</span>
-            </a>
-            <a href="https://www.milenio.com/deportes/futbol-internacional/mundial" class="card" onmouseenter="playSfx()" ontouchstart="playSfx()">
-                <span class="card-label">Noticias</span>
-                <img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/3.png" class="card-icon">
-                <span class="card-desc">La actualidad del camino al 2026...</span>
+            <div class="card-wrapper" onmouseenter="playSfx()" ontouchstart="playSfx()">
+                <div class="neon-frame outer-f"></div><div class="neon-frame mid-f"></div><div class="neon-frame inner-f"></div>
+                <svg class="trace-svg"><rect /></svg>
+                <a href="https://www.milenio.com/futbol-internacional/mundial/calendario" target="_parent" class="card-content">
+                    <span class="card-label">CALENDARIO</span>
+                    <img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/1.png" class="card-icon">
+                    <span class="card-desc">Sedes y programación oficial del Mundial 2026...</span>
+                </a>
+            </div>
+
+            <div class="card-wrapper" onmouseenter="playSfx()" ontouchstart="playSfx()">
+                <div class="neon-frame outer-f"></div><div class="neon-frame mid-f"></div><div class="neon-frame inner-f"></div>
+                <svg class="trace-svg"><rect /></svg>
+                <a href="https://stage2-front.milenio.com/futbol-internacional/mundial/estadisticas" target="_parent" class="card-content">
+                    <span class="card-label">ESTADÍSTICAS</span>
+                    <img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/2.png" class="card-icon">
+                    <span class="card-desc">Números y data en tiempo real de los equipos...</span>
+                </a>
+            </div>
+
+            <div class="card-wrapper" onmouseenter="playSfx()" ontouchstart="playSfx()">
+                <div class="neon-frame outer-f"></div><div class="neon-frame mid-f"></div><div class="neon-frame inner-f"></div>
+                <svg class="trace-svg"><rect /></svg>
+                <a href="https://www.milenio.com/deportes/futbol-internacional/mundial" target="_parent" class="card-content">
+                    <span class="card-label">NOTICIAS</span>
+                    <img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/3.png" class="card-icon">
+                    <span class="card-desc">La actualidad del camino a la Copa del Mundo...</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="game-wrapper" onmouseenter="playSfx()" ontouchstart="playSfx()">
+            <div class="neon-frame outer-f"></div><div class="neon-frame mid-f"></div><div class="neon-frame inner-f"></div>
+            <svg class="trace-svg"><rect /></svg>
+            <a href="https://stage2-front.milenio.com/deportes/mundialito-milenio" target="_parent" class="futbolito-box">
+                <h2 style="margin:0; font-size: 2.2rem; font-family: 'Arial Black'; text-shadow: 0 0 15px rgba(0,0,0,0.8);">MUNDIALITO MILENIO</h2>
+                <div class="btn-juega">¡PATEA AHORA! »</div>
             </a>
         </div>
 
-        <!-- JUEGO -->
-        <a href="https://stage2-front.milenio.com/deportes/mundialito-milenio" class="futbolito-box" onmouseenter="playSfx()">
-            <h2>FUTBOLITO MILENIO</h2>
-            <div class="btn-juega">JUEGA AHORA »</div>
-        </a>
-
-        <!-- BLOQUE 2 -->
-        <div class="grid-3">
-            <a href="#" class="card" onmouseenter="playSfx()" ontouchstart="playSfx()">
-                <span class="card-label">Estadios</span>
-                <img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/2.png" class="card-icon">
-                <span class="card-desc">Conoce los templos del fútbol...</span>
-            </a>
-            <a href="#" class="card" onmouseenter="playSfx()" ontouchstart="playSfx()">
-                <span class="card-label">Mundiales</span>
-                <img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/1.png" class="card-icon">
-                <span class="card-desc">Repasando ediciones históricas...</span>
-            </a>
-            <a href="#" class="card" onmouseenter="playSfx()" ontouchstart="playSfx()">
-                <span class="card-label">Leyendas</span>
-                <img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/3.png" class="card-icon">
-                <span class="card-desc">Los íconos que marcaron época...</span>
-            </a>
-        </div>
-
-        <div class="section-header"><div class="tabs"><span class="tab active">VIDEO</span></div></div>
-        <div class="content-wrapper video-h">
+        <div class="section-title">COBERTURA ESPECIAL</div>
+        <div class="video-container h-video">
             <iframe src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/SliderVideo.html"></iframe>
         </div>
 
-        <!-- BLOQUE 3 -->
         <div class="grid-3">
-            <a href="#" class="card" onmouseenter="playSfx()" ontouchstart="playSfx()">
-                <span class="card-label">Infografías</span>
-                <img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/1.png" class="card-icon">
-                <span class="card-desc">Data visualizada con impacto...</span>
-            </a>
-            <a href="#" class="card" onmouseenter="playSfx()" ontouchstart="playSfx()">
-                <span class="card-label">Balones</span>
-                <img src="https://cdnpublicidad.milenio.com/2025/PublicidadEditorial/05.Mayo/slider-yt/ProyectoMundial2026/Juego_vectores/balon.png" class="card-icon">
-                <span class="card-desc">La historia del balón oficial...</span>
-            </a>
-            <a href="#" class="card" onmouseenter="playSfx()" ontouchstart="playSfx()">
-                <span class="card-label">Estrellas</span>
-                <img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/2.png" class="card-icon">
-                <span class="card-desc">Las figuras a seguir en el 2026...</span>
-            </a>
+            <div class="card-wrapper" onmouseenter="playSfx()" ontouchstart="playSfx()">
+                <div class="neon-frame outer-f"></div><div class="neon-frame mid-f"></div><div class="neon-frame inner-f"></div>
+                <svg class="trace-svg"><rect /></svg>
+                <a href="#" class="card-content">
+                    <span class="card-label">ESTADIOS</span>
+                    <img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/2.png" class="card-icon">
+                    <span class="card-desc">Conoce los 16 templos que recibirán el fútbol...</span>
+                </a>
+            </div>
+            <div class="card-wrapper" onmouseenter="playSfx()" ontouchstart="playSfx()">
+                <div class="neon-frame outer-f"></div><div class="neon-frame mid-f"></div><div class="neon-frame inner-f"></div>
+                <svg class="trace-svg"><rect /></svg>
+                <a href="#" class="card-content">
+                    <span class="card-label">HISTORIA</span>
+                    <img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/1.png" class="card-icon">
+                    <span class="card-desc">Relatos históricos de las copas pasadas...</span>
+                </a>
+            </div>
+            <div class="card-wrapper" onmouseenter="playSfx()" ontouchstart="playSfx()">
+                <div class="neon-frame outer-f"></div><div class="neon-frame mid-f"></div><div class="neon-frame inner-f"></div>
+                <svg class="trace-svg"><rect /></svg>
+                <a href="#" class="card-content">
+                    <span class="card-label">LEYENDAS</span>
+                    <img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/3.png" class="card-icon">
+                    <span class="card-desc">Los íconos que marcaron la historia del deporte...</span>
+                </a>
+            </div>
         </div>
 
-        <div class="section-header"><div class="tabs"><span class="tab active">REELS</span></div></div>
-        <div class="content-wrapper reels-h">
+        <div class="section-title">MOMENTOS DESTACADOS</div>
+        <div class="video-container h-reels">
             <iframe src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/Shorts/MIX/Vid-vertical-04052026.html"></iframe>
         </div>
     </div>
 
-    <!-- SISTEMA DE SONIDO Y ESTRELLAS THREE.JS -->
     <script>
         const sfx = new Audio("https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/Button%20Selection%2005.mp3");
         sfx.volume = 0.2;
@@ -189,20 +226,14 @@
         let renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.getElementById('canvas-container').appendChild(renderer.domElement);
-        
         const geo = new THREE.BufferGeometry();
         const pos = [];
-        for(let i=0; i<1500; i++) pos.push((Math.random()-0.5)*100, (Math.random()-0.5)*100, (Math.random()-0.5)*100);
+        for(let i=0; i<1000; i++) pos.push((Math.random()-0.5)*100, (Math.random()-0.5)*100, (Math.random()-0.5)*100);
         geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
-        const mat = new THREE.PointsMaterial({ color: 0x00f2ff, size: 0.15 });
-        const points = new THREE.Points(geo, mat);
-        scene.add(points); camera.position.z = 40;
-
-        function animate() { requestAnimationFrame(animate); points.rotation.y += 0.0006; renderer.render(scene, camera); }
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
+        const mat = new THREE.PointsMaterial({ color: 0x00f2ff, size: 0.12 });
+        const stars = new THREE.Points(geo, mat);
+        scene.add(stars); camera.position.z = 40;
+        function animate() { requestAnimationFrame(animate); stars.rotation.y += 0.0005; renderer.render(scene, camera); }
         animate();
     </script>
 </body>
