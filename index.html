@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mundial 2026 Milenio - Interactivo</title>
+    <title>Mundial 2026 Milenio - Portal Completo</title>
     <style>
         :root { 
             --mex-green: #00ef00; --usa-blue: #007bff; --can-red: #ff0000; --neon: #00f2ff;
@@ -19,15 +19,9 @@
         #ui { position: relative; z-index: 10; width: 100%; max-width: 900px; margin: 0 auto; padding: 20px; box-sizing: border-box; perspective: 1200px; }
 
         .main-header-img { display: block; width: 100%; height: auto; margin-bottom: 20px; }
-        
-        .grid-3 { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 25px; 
-            margin-bottom: 30px; 
-        }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin-bottom: 30px; }
 
-        /* --- BASE CARD CON TRIPLE MARCO --- */
+        /* --- TARJETA CON TRIPLE MARCO --- */
         .card {
             background: rgba(15, 15, 15, 0.8);
             border: 2px solid rgba(255, 255, 255, 0.15);
@@ -38,52 +32,32 @@
             color: #fff;
             transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s, box-shadow 0.3s;
             backdrop-filter: blur(10px);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-            transform-style: preserve-3d;
+            display: flex; flex-direction: column; align-items: center;
+            position: relative; transform-style: preserve-3d;
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Remarcados externos */
+        /* Marcos de remarcado externo */
         .card::before, .card::after {
-            content: '';
-            position: absolute;
-            border-radius: 14px;
-            border: 2px solid transparent;
-            pointer-events: none;
-            opacity: 0;
-            transition: all 0.4s ease;
-            transform: translateZ(-5px);
+            content: ''; position: absolute; border-radius: 14px; border: 2px solid transparent;
+            pointer-events: none; opacity: 0; transition: all 0.4s ease; transform: translateZ(-5px);
         }
-
         .card::before { inset: -6px; } 
         .card::after { inset: -12px; }
 
-        /* Efecto de Giro y Activación */
-        .card:hover, .card:active { 
-            transform: scale(1.05) rotateY(360deg); 
-            z-index: 50; 
-        }
+        /* Giro 360 y Activación */
+        .card:hover, .card:active { transform: scale(1.05) rotateY(360deg); z-index: 50; }
+        .card:hover::before, .card:hover::after, .card:active::before, .card:active::after { opacity: 1; }
 
-        .card:hover::before, .card:hover::after,
-        .card:active::before, .card:active::after { 
-            opacity: 1; 
-        }
-
-        /* --- COLORES DINÁMICOS POR COLUMNA --- */
-        /* MEX (Verde) */
+        /* Colores por columna */
         .grid-3 a:nth-child(3n+1):hover, .grid-3 a:nth-child(3n+1):active { border-color: var(--mex-green); box-shadow: 0 0 20px var(--mex-green); }
         .grid-3 a:nth-child(3n+1):hover::before, .grid-3 a:nth-child(3n+1):active::before { border-color: var(--mex-green); }
         .grid-3 a:nth-child(3n+1):hover::after, .grid-3 a:nth-child(3n+1):active::after { border-color: rgba(0, 239, 0, 0.3); }
 
-        /* USA (Azul) */
         .grid-3 a:nth-child(3n+2):hover, .grid-3 a:nth-child(3n+2):active { border-color: var(--usa-blue); box-shadow: 0 0 20px var(--usa-blue); }
         .grid-3 a:nth-child(3n+2):hover::before, .grid-3 a:nth-child(3n+2):active::before { border-color: var(--usa-blue); }
         .grid-3 a:nth-child(3n+2):hover::after, .grid-3 a:nth-child(3n+2):active::after { border-color: rgba(0, 123, 255, 0.3); }
 
-        /* CAN (Rojo) */
         .grid-3 a:nth-child(3n+3):hover, .grid-3 a:nth-child(3n+3):active { border-color: var(--can-red); box-shadow: 0 0 20px var(--can-red); }
         .grid-3 a:nth-child(3n+3):hover::before, .grid-3 a:nth-child(3n+3):active::before { border-color: var(--can-red); }
         .grid-3 a:nth-child(3n+3):hover::after, .grid-3 a:nth-child(3n+3):active::after { border-color: rgba(255, 0, 0, 0.3); }
@@ -103,15 +77,14 @@
         .futbolito-box:hover { border-color: var(--can-red); box-shadow: 0 0 30px rgba(255,0,0,0.4); }
         .btn-juega { background: #ff0000; color: #fff; padding: 12px 30px; border-radius: 50px; font-weight: bold; margin-top: 15px; width: fit-content; }
 
-        /* CONTENEDORES DE VIDEO */
-        .section-header { display: flex; justify-content: space-between; align-items: center; margin: 20px 0 15px; }
-        .tabs .tab.active { color: var(--neon); border-bottom: 2px solid var(--neon); font-weight: bold; padding-bottom: 5px; }
+        /* VIDEOS & REELS */
+        .section-header { margin: 20px 0 15px; display: flex; align-items: center; }
+        .tab.active { color: var(--neon); border-bottom: 2px solid var(--neon); font-weight: bold; padding-bottom: 5px; }
         .content-wrapper { width: 100%; border-radius: 15px; overflow: hidden; border: 1px solid rgba(255,255,255,0.2); margin-bottom: 40px; background: #000; }
         .video-h { height: 550px; } 
         .reels-h { height: 680px; }
         iframe { width: 100% !important; height: 100% !important; border: none; }
 
-        /* AJUSTE MOBILE */
         @media (max-width: 768px) {
             .grid-3 { grid-template-columns: 1fr; gap: 40px; }
             .card:active { transform: scale(1.02) rotateY(180deg); }
@@ -129,17 +102,17 @@
 
         <!-- BLOQUE 1 -->
         <div class="grid-3">
-            <a href="#" class="card" onmouseenter="playSfx()" ontouchstart="playSfx()">
+            <a href="https://www.milenio.com/futbol-internacional/mundial/calendario" class="card" onmouseenter="playSfx()" ontouchstart="playSfx()">
                 <span class="card-label">Calendario</span>
                 <img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/1.png" class="card-icon">
                 <span class="card-desc">Sedes y programación oficial...</span>
             </a>
-            <a href="#" class="card" onmouseenter="playSfx()" ontouchstart="playSfx()">
+            <a href="https://stage2-front.milenio.com/futbol-internacional/mundial/estadisticas" class="card" onmouseenter="playSfx()" ontouchstart="playSfx()">
                 <span class="card-label">Estadísticas</span>
                 <img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/2.png" class="card-icon">
                 <span class="card-desc">Números y data en tiempo real...</span>
             </a>
-            <a href="#" class="card" onmouseenter="playSfx()" ontouchstart="playSfx()">
+            <a href="https://www.milenio.com/deportes/futbol-internacional/mundial" class="card" onmouseenter="playSfx()" ontouchstart="playSfx()">
                 <span class="card-label">Noticias</span>
                 <img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/3.png" class="card-icon">
                 <span class="card-desc">La actualidad del camino al 2026...</span>
@@ -147,7 +120,7 @@
         </div>
 
         <!-- JUEGO -->
-        <a href="https://stage2-front.milenio.com/deportes/mundialito-milenio" target="_parent" class="futbolito-box" onmouseenter="playSfx()">
+        <a href="https://stage2-front.milenio.com/deportes/mundialito-milenio" class="futbolito-box" onmouseenter="playSfx()">
             <h2>FUTBOLITO MILENIO</h2>
             <div class="btn-juega">JUEGA AHORA »</div>
         </a>
@@ -201,13 +174,36 @@
         </div>
     </div>
 
+    <!-- SISTEMA DE SONIDO Y ESTRELLAS THREE.JS -->
     <script>
-        const hoverSound = new Audio("https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/Button%20Selection%2005.mp3");
-        hoverSound.volume = 0.2;
-        function playSfx() {
-            const s = hoverSound.cloneNode();
-            s.play().catch(()=>{});
-        }
+        const sfx = new Audio("https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/Button%20Selection%2005.mp3");
+        sfx.volume = 0.2;
+        function playSfx() { const s = sfx.cloneNode(); s.play().catch(()=>{}); }
+    </script>
+
+    <script type="importmap"> { "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } } </script>
+    <script type="module">
+        import * as THREE from 'three';
+        let scene = new THREE.Scene();
+        let camera = new THREE.PerspectiveCamera(65, window.innerWidth/window.innerHeight, 0.1, 1000);
+        let renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+        
+        const geo = new THREE.BufferGeometry();
+        const pos = [];
+        for(let i=0; i<1500; i++) pos.push((Math.random()-0.5)*100, (Math.random()-0.5)*100, (Math.random()-0.5)*100);
+        geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+        const mat = new THREE.PointsMaterial({ color: 0x00f2ff, size: 0.15 });
+        const points = new THREE.Points(geo, mat);
+        scene.add(points); camera.position.z = 40;
+
+        function animate() { requestAnimationFrame(animate); points.rotation.y += 0.0006; renderer.render(scene, camera); }
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+        animate();
     </script>
 </body>
 </html>
