@@ -126,11 +126,8 @@
 
     <div id="canvas-container"></div>
 
-    <audio id="ambient-audio" loop preload="auto">
-        <source src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/EstadioAmbiente.mp3">
-    </audio>
     <audio id="select-audio" preload="auto">
-        <source src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/Button%20Selection%2005.mp3">
+        <source src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/Button%20Selection%2005.mp3" type="audio/mpeg">
     </audio>
 
     <div id="ui">
@@ -240,32 +237,36 @@
     </div>
 
     <script>
-        const ambientSnd = document.getElementById('ambient-audio');
         const selectSnd = document.getElementById('select-audio');
         const targetURL = "https://stage2-front.milenio.com/deportes/mundialito-milenio";
 
-        // Función de sonido mejorada
+        // Función de audio optimizada: Crea una instancia nueva cada vez
+        // Esto permite que el sonido se escuche varias veces seguidas rápidamente
         function playSelectSound() { 
-            const clone = selectSnd.cloneNode();
-            clone.volume = 1.0; // Volumen al máximo
-            clone.play().catch(e => console.log("Audio bloqueado temporalmente")); 
+            try {
+                const clone = new Audio(selectSnd.querySelector('source').src);
+                clone.volume = 1.0;
+                clone.play().catch(() => {
+                    console.log("Audio esperando interacción del usuario.");
+                });
+            } catch (e) {
+                console.error("Error al reproducir audio:", e);
+            }
         }
 
-        // Activa audios en la primera interacción del usuario con la página
-        function initContext() {
-            if(ambientSnd.paused) ambientSnd.play().catch(e=>{});
-            // "Cebamos" el sonido de selección para que el navegador lo permita
+        // DESBLOQUEADOR: Activa el sistema de audio con el primer clic/toque
+        function initAudioContext() {
             selectSnd.play().then(() => {
                 selectSnd.pause();
                 selectSnd.currentTime = 0;
-            }).catch(e=>{});
+            }).catch(e => {});
             
-            window.removeEventListener('click', initContext);
-            window.removeEventListener('touchstart', initContext);
+            window.removeEventListener('click', initAudioContext);
+            window.removeEventListener('touchstart', initAudioContext);
         }
 
-        window.addEventListener('click', initContext);
-        window.addEventListener('touchstart', initContext);
+        window.addEventListener('click', initAudioContext);
+        window.addEventListener('touchstart', initAudioContext);
 
         function handleNav(element, url) {
             playSelectSound();
@@ -290,6 +291,7 @@
             const container = document.getElementById('options-container');
             const triviaBox = document.getElementById('trivia-box');
 
+            if(!dynamic) return;
             dynamic.style.opacity = 0;
 
             setTimeout(() => {
