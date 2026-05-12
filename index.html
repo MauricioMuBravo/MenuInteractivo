@@ -112,12 +112,43 @@
         .btn-juega-ahora:hover { transform: scale(1.05); background: #ff1a1a; box-shadow: 0 0 30px #ff1a1a; }
         .character-portrait { position: absolute; bottom: -40px; right: -20px; height: 420px; z-index: 5; pointer-events: none; }
 
+        /* 4. CONTENEDOR DE VIDEOS (SliderVideo.html) */
         .iframe-container {
-            width: 100%; border-radius: 20px; overflow: hidden;
-            background: #000; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 40px;
+            width: 100%;
+            max-width: 950px;
+            height: 420px; /* Aumentado un poco para dar aire al video cuadrado */
+            margin: 0 auto 40px auto;
+            background: rgba(0, 0, 0, 0.5); 
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            overflow: hidden;
+            display: flex;
+            box-sizing: border-box;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .video-slider-iframe { width: 100%; height: 500px; border: none; display: block; }
-        .reels-iframe { width: 100%; height: 650px; border: none; display: block; }
+        
+        .video-slider-iframe { 
+            width: 100%; 
+            height: 100%; 
+            border: none; 
+            display: block; 
+        }
+
+        /* 5. CONTENEDOR DE REELS (Verticales) */
+        .reels-container {
+            width: 100%;
+            max-width: 950px;
+            margin: 0 auto 40px auto;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        .reels-iframe { 
+            width: 100%; 
+            height: 650px; 
+            border: none; 
+            display: block; 
+        }
 
         @media (max-width: 768px) {
             .grid-3 { grid-template-columns: 1fr; }
@@ -125,6 +156,7 @@
             .trivia-container { grid-column: 1; align-items: center; margin-bottom: 20px; }
             .action-container { grid-column: 1; padding-bottom: 120px; }
             .character-portrait { height: 280px; right: -10px; }
+            .iframe-container { height: 700px; } /* Ajuste para móvil */
         }
     </style>
 </head>
@@ -210,7 +242,7 @@
         </div>
 
         <div class="iframe-container">
-            <iframe src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/SliderVideo.html" class="video-slider-iframe" scrolling="yes"></iframe>
+            <iframe src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/SliderVideo.html" class="video-slider-iframe" scrolling="no"></iframe>
         </div>
 
         <div class="grid-3">
@@ -237,7 +269,7 @@
             </div>
         </div>
 
-        <div class="iframe-container">
+        <div class="reels-container">
             <iframe src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/Shorts/MIX/Videos-verticalesMenu.html" class="reels-iframe" scrolling="no"></iframe>
         </div>
     </div>
@@ -246,33 +278,13 @@
         const selectSnd = document.getElementById('select-audio');
         const targetURL = "https://stage2-front.milenio.com/deportes/mundialito-milenio";
 
-        // Función de audio optimizada: Crea una instancia nueva cada vez
-        // Esto permite que el sonido se escuche varias veces seguidas rápidamente
         function playSelectSound() { 
             try {
                 const clone = new Audio(selectSnd.querySelector('source').src);
                 clone.volume = 1.0;
-                clone.play().catch(() => {
-                    console.log("Audio esperando interacción del usuario.");
-                });
-            } catch (e) {
-                console.error("Error al reproducir audio:", e);
-            }
+                clone.play().catch(() => {});
+            } catch (e) {}
         }
-
-        // DESBLOQUEADOR: Activa el sistema de audio con el primer clic/toque
-        function initAudioContext() {
-            selectSnd.play().then(() => {
-                selectSnd.pause();
-                selectSnd.currentTime = 0;
-            }).catch(e => {});
-            
-            window.removeEventListener('click', initAudioContext);
-            window.removeEventListener('touchstart', initAudioContext);
-        }
-
-        window.addEventListener('click', initAudioContext);
-        window.addEventListener('touchstart', initAudioContext);
 
         function handleNav(element, url) {
             playSelectSound();
@@ -281,6 +293,7 @@
             setTimeout(() => { window.top.location.href = url; }, 600);
         }
 
+        // Trivia Logic
         const triviaPool = [
             { q: "¿QUIÉN GANÓ EL MUNDIAL DE ITALIA 90?", opts: ["Italia", "Alemania", "Argentina"] },
             { q: "¿PAÍS CON MÁS MUNDIALES GANADOS?", opts: ["Alemania", "Brasil", "Italia"] },
@@ -290,7 +303,6 @@
         ];
 
         let currentIndex = 0;
-
         function updateTrivia() {
             const dynamic = document.getElementById('trivia-content-dynamic');
             const qText = document.getElementById('question-text');
@@ -310,7 +322,6 @@
                     const btn = document.createElement('button');
                     btn.className = 'option-btn';
                     btn.innerText = opt;
-                    btn.onmouseenter = () => playSelectSound();
                     btn.onclick = () => { 
                         playSelectSound();
                         triviaBox.classList.add('run-glow-sweep');
@@ -343,11 +354,6 @@
         scene.add(stars); camera.position.z = 45;
         function animate() { requestAnimationFrame(animate); stars.rotation.y += 0.0006; renderer.render(scene, camera); }
         animate();
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
     </script>
 </body>
 </html>
