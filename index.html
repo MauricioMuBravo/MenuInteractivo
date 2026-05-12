@@ -18,8 +18,28 @@
         }
 
         #particles-js { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 1; pointer-events: none; }
-        #ui { position: relative; z-index: 10; width: 100%; max-width: 950px; margin: 0 auto; padding: 20px; box-sizing: border-box; }
-        .main-header-img { display: block; width: 100%; height: auto; margin-bottom: 30px; }
+        
+        /* CONTENEDOR PRINCIPAL */
+        #ui { 
+            position: relative; 
+            z-index: 10; 
+            width: 100%; 
+            max-width: 950px; 
+            margin: 0 auto; 
+            padding: 80px 20px 20px 20px; 
+            box-sizing: border-box; 
+        }
+
+        /* LOGO AMPLIADO */
+        .main-header-img { 
+            display: block; 
+            width: 120%; 
+            max-width: 1100px;
+            height: auto; 
+            margin: 0 auto 40px auto; 
+            transform: translateX(-8.5%); 
+            filter: drop-shadow(0 0 20px rgba(0,0,0,0.5));
+        }
 
         /* GRIDS */
         .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 40px; }
@@ -63,18 +83,16 @@
 
         /* MOBILE */
         @media (max-width: 768px) {
+            #ui { padding-top: 60px; }
+            .main-header-img { width: 100%; transform: none; margin-bottom: 25px; }
             .grid-3 { grid-template-columns: 1fr; }
             .futbolito-main-container { 
                 min-height: 520px; 
                 background: url('https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/IMGS/FutbolitomilenioMobi.png') no-repeat center/cover;
                 padding: 20px;
-                justify-content: flex-end;
             }
-            .game-header { text-align: left; margin-bottom: auto; }
-            .game-header h2 { font-size: 1.6rem; }
-            .game-header p { font-size: 0.9rem; }
-            .bottom-controls { flex-direction: column; align-items: center; gap: 15px; width: 100%; margin-bottom: 10px; }
-            .trivia-container, .action-container { width: 100%; text-align: center; flex: none; margin-left: 0; }
+            .bottom-controls { flex-direction: column; align-items: center; gap: 15px; width: 100%; }
+            .trivia-container, .action-container { width: 100%; text-align: center; margin-left: 0; }
             .btn-juega-ahora img { width: 220px; }
         }
 
@@ -89,15 +107,8 @@
         .bg-8 { background: url('https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/IMGS/Fondo_8.png'); }
         .bg-9 { background: url('https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/IMGS/Fondo_9.png'); }
         
-        /* CORRECCIÓN SCROLL EN VIDEOS */
         iframe { width: 100%; border: none; overflow: hidden; display: block; }
-        .video-wrapper { 
-            width: 100%; 
-            margin: 0 auto 40px; 
-            border-radius: 15px; 
-            overflow: hidden; 
-            background: transparent;
-        }
+        .video-wrapper { width: 100%; margin: 0 auto 40px; border-radius: 15px; overflow: hidden; background: transparent; }
     </style>
 </head>
 <body>
@@ -131,7 +142,6 @@
                 <h2>FUTBOLITO MILENIO</h2>
                 <p>Solo para verdaderos aficionados.</p>
             </div>
-            
             <div class="bottom-controls">
                 <div class="trivia-container">
                     <div class="trivia-box">
@@ -184,7 +194,11 @@
     <script>
         const audio = document.getElementById('select-audio');
         function playSelectSound() { 
-            if(audio) { audio.pause(); audio.currentTime = 0; audio.play().catch(() => {}); } 
+            if(audio) { 
+                audio.pause(); 
+                audio.currentTime = 0; 
+                audio.play().catch(() => {}); 
+            } 
         }
 
         function handleNav(element, url) { 
@@ -195,13 +209,12 @@
         
         particlesJS("particles-js", {
             "particles": {
-                "number": { "value": 15, "density": { "enable": true, "value_area": 800 } },
+                "number": { "value": 15 },
                 "color": { "value": "#00f2ff" },
                 "shape": { "type": "circle" },
-                "opacity": { "value": 0.3, "random": true },
-                "size": { "value": 4, "random": true },
-                "line_linked": { "enable": false },
-                "move": { "enable": true, "speed": 1.5, "direction": "none", "random": true, "straight": false, "out_mode": "out" }
+                "opacity": { "value": 0.3 },
+                "size": { "value": 4 },
+                "move": { "enable": true, "speed": 1.5 }
             }
         });
 
@@ -210,7 +223,6 @@
             { q: "¿MÁS MUNDIALES GANADOS?", opts: ["Alemania", "Brasil", "Italia"] }
         ];
         let currentIndex = 0;
-        
         function updateTrivia() {
             const qText = document.getElementById('question-text');
             const container = document.getElementById('options-container');
@@ -222,8 +234,8 @@
                     const btn = document.createElement('button'); 
                     btn.className = 'option-btn'; 
                     btn.innerText = opt;
-                    btn.onmouseenter = playSelectSound; 
-                    btn.ontouchstart = playSelectSound;
+                    btn.onmouseenter = playSelectSound; // Sonido al pasar el mouse
+                    btn.ontouchstart = playSelectSound; // Sonido al tocar en móvil
                     btn.onclick = () => { 
                         playSelectSound(); 
                         setTimeout(() => { window.top.location.href = "https://stage2-front.milenio.com/deportes/mundialito-milenio"; }, 300); 
@@ -233,8 +245,7 @@
             }
             currentIndex = (currentIndex + 1) % triviaPool.length;
         }
-        
-        setInterval(updateTrivia, 6000); 
+        setInterval(updateTrivia, 6000);
         window.addEventListener('load', updateTrivia);
     </script>
 </body>
