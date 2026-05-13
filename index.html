@@ -80,8 +80,6 @@
 
         /* CONTAINERS */
         .ext-container { width: 100%; background: rgba(0,0,0,0.5); margin-bottom: 50px; border-radius: 30px; overflow: hidden; border: 1px solid rgba(255,255,255,0.15); backdrop-filter: blur(10px); }
-        
-        /* FIX MOBILE SCROLL */
         .h-video { height: 460px; -webkit-overflow-scrolling: touch; } 
         .v-reels { height: 520px; } 
         iframe { width: 100%; height: 100%; border: none; display: block; }
@@ -122,11 +120,36 @@
 
         @media (max-width: 768px) {
             .grid-3 { grid-template-columns: 1fr; }
-            /* Aquí forzamos que el iframe del video tenga scroll vertical activo */
             .h-video { height: 620px; overflow-y: auto; } 
             .v-reels { height: 540px; } 
-            .futbolito-box { min-height: 550px; background-image: url('https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/IMGS/FutbolitomilenioMobi.png'); }
-            .bottom-row { flex-direction: column; }
+            
+            .futbolito-box { 
+                min-height: 600px; 
+                background-image: url('https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/IMGS/FutbolitomilenioMobi.png'); 
+                padding: 20px;
+                justify-content: flex-start; 
+            }
+            .game-header h2 { font-size: 1.8rem; }
+            .game-header p { font-size: 0.9rem !important; }
+            
+            /* BAJAR TRIVIA Y BOTÓN JUEGA AHORA */
+            .bottom-row { 
+                flex-direction: column; 
+                margin-top: 195px; /* Valor aumentado para bajar todo el bloque de la trivia */
+                gap: 20px; 
+            }
+            
+            .trivia-container { 
+                width: 90%; 
+                max-width: 300px; 
+                padding: 15px; 
+                margin: 0 auto; 
+                background: rgba(0,0,0,0.85); /* Mayor opacidad para legibilidad */
+            }
+            .trivia-container h3 { font-size: 0.9rem; }
+            .option-btn { font-size: 0.65rem; min-width: 80px; padding: 8px 12px; }
+            
+            .btn-juega img { width: 190px; }
         }
     </style>
 </head>
