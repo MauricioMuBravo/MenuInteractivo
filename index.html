@@ -8,8 +8,51 @@
         :root { 
             --mex-green: #A0D825; --usa-blue: #2755D5; --can-red: #ED4866; --neon-cyan: #00f2ff;
         }
+
+        /* PANTALLA DE CARGA - FIX */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.6s ease, visibility 0.6s;
+        }
+
+        .balon-bounce {
+            width: 80px;
+            height: auto;
+            animation: bounce 0.6s infinite alternate cubic-bezier(0.45, 0.05, 0.55, 0.95);
+            filter: drop-shadow(0 0 15px var(--mex-green));
+        }
+
+        .loader-text {
+            margin-top: 25px;
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            color: #fff;
+            font-weight: bold;
+            font-family: 'Arial', sans-serif;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-40px); }
+        }
+
+        .loader-hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
         
-        /* FONDO Y PARTICULAS */
+        /* FONDO Y PARTICULAS ORIGINALES */
         html { background: #000 url('https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/IMGS/Fondo_ESTADIO.jpg') no-repeat center top / cover fixed; }
         body { 
             margin: 0; padding: 0; width: 100%; min-height: 100vh; color: #fff; font-family: 'Arial', sans-serif; overflow-x: hidden;
@@ -92,7 +135,7 @@
 
         iframe { width: 100%; border: none; display: block; }
 
-        /* MOBILE - CAMBIOS PARA INTEGRACIÓN DE SCROLL */
+        /* MOBILE */
         @media (max-width: 768px) {
             #ui { padding-top: 60px; }
             .main-header-img { width: 100%; transform: none; margin-bottom: 25px; }
@@ -106,7 +149,6 @@
             .trivia-container, .action-container { width: 100%; text-align: center; margin-left: 0; }
             .btn-juega-ahora img { width: 220px; }
             
-            /* Aumentamos la altura del iframe para que quepa el reproductor Y la lista scrolleable */
             .video-wrapper iframe.slider-iframe { height: 820px !important; }
         }
 
@@ -123,6 +165,11 @@
     </style>
 </head>
 <body>
+
+    <div id="loader">
+        <img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/IMGS/Balon.png" class="balon-bounce">
+        <div class="loader-text">CARGANDO.....</div>
+    </div>
 
     <div id="particles-js"></div>
     
@@ -199,10 +246,24 @@
         <div class="video-wrapper" style="max-width:950px;">
             <iframe src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/Shorts/MIX/Videos-verticalesMenu.html" style="height:650px;" scrolling="no"></iframe>
         </div>
-    </div>
+
+        <div style="text-align: center; margin-top: 50px; padding-bottom: 40px;">
+            <img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/CreditosInteractivo.png" 
+                 style="max-width: 500px; width: 90%; height: auto; filter: brightness(1.2); opacity: 0.9;">
+        </div>
+
+    </div> 
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
+        // LOADER SCRIPT
+        window.addEventListener('load', function() {
+            const loader = document.getElementById('loader');
+            setTimeout(() => {
+                loader.classList.add('loader-hidden');
+            }, 1000);
+        });
+
         const audio = document.getElementById('select-audio');
         function playSelectSound() { 
             if(audio) { 
