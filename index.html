@@ -84,7 +84,7 @@
         /* WRAPPER DEL VIDEO */
         .video-wrapper { 
             width: 100%; 
-            margin: 0 auto 50px; 
+            margin: 0 auto 40px; 
             border-radius: 15px; 
             overflow: hidden; 
             background: transparent; 
@@ -92,7 +92,7 @@
 
         iframe { width: 100%; border: none; display: block; }
 
-        /* MOBILE */
+        /* MOBILE - CAMBIOS PARA INTEGRACIÓN DE SCROLL */
         @media (max-width: 768px) {
             #ui { padding-top: 60px; }
             .main-header-img { width: 100%; transform: none; margin-bottom: 25px; }
@@ -105,7 +105,9 @@
             .bottom-controls { flex-direction: column; align-items: center; gap: 15px; width: 100%; }
             .trivia-container, .action-container { width: 100%; text-align: center; margin-left: 0; }
             .btn-juega-ahora img { width: 220px; }
-            .video-wrapper iframe.slider-iframe { height: 780px !important; }
+            
+            /* Aumentamos la altura del iframe para que quepa el reproductor Y la lista scrolleable */
+            .video-wrapper iframe.slider-iframe { height: 820px !important; }
         }
 
         /* FONDOS TARJETAS */
@@ -179,7 +181,7 @@
         </div>
 
         <div class="video-wrapper" style="max-width:920px;">
-            <iframe class="slider-iframe" src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/SliderVideo.html" style="height: 580px;" scrolling="no"></iframe>
+            <iframe class="slider-iframe" src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/SliderVideo.html" style="height: 480px;" scrolling="no"></iframe>
         </div>
 
         <div class="grid-3">
@@ -243,7 +245,7 @@
                     const btn = document.createElement('button'); 
                     btn.className = 'option-btn'; 
                     btn.innerText = opt;
-                    btn.onmouseenter = () => { playSelectSound(); }; // AGREGADO SONIDO HOVER
+                    btn.onmouseenter = () => { playSelectSound(); };
                     btn.onclick = () => { 
                         playSelectSound(); 
                         setTimeout(() => { window.top.location.href = "https://stage2-front.milenio.com/deportes/mundialito-milenio"; }, 300); 
