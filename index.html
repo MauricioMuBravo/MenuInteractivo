@@ -12,51 +12,10 @@
             --neon-cyan: #00f2ff;
         }
 
-        /* NUEVA FORMA: LOADER QUE "SIEGUE" AL USUARIO */
-        #loader {
-            position: absolute; /* Para moverlo dinámicamente con JS */
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background-color: #000;
-            z-index: 999999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 0.6s ease;
-        }
-
-        .balon-bounce {
-            width: 80px;
-            height: auto;
-            animation: bounce 0.6s infinite alternate cubic-bezier(0.45, 0.05, 0.55, 0.95);
-            filter: drop-shadow(0 0 15px var(--mex-green));
-        }
-
-        .loader-text {
-            margin-top: 25px;
-            font-size: 1.2rem;
-            letter-spacing: 5px;
-            color: #fff;
-            font-weight: bold;
-            font-family: 'Arial', sans-serif;
-        }
-
-        @keyframes bounce {
-            from { transform: translateY(0); }
-            to { transform: translateY(-40px); }
-        }
-
-        .loader-hidden {
-            opacity: 0 !important;
-            visibility: hidden !important;
-        }
-
-        /* CUERPO Y FONDO */
+        /* FONDO Y BASE */
         html {
             background: #000 url('https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/IMGS/Fondo_ESTADIO.jpg') no-repeat center top / cover fixed;
+            /* Quitamos scroll-behavior: smooth temporalmente para el inicio forzado */
         }
 
         body {
@@ -67,8 +26,53 @@
             color: #fff;
             font-family: 'Arial', sans-serif;
             overflow-x: hidden;
-            background: radial-gradient(circle, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.7) 100%);
-            backdrop-filter: blur(4px);
+            background: #000;
+        }
+
+        /* EFECTO BIG BANG (ESTALLIDO BLANCO) */
+        #intro-overlay {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 99999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+        }
+
+        .balon-intro {
+            width: 80px;
+            filter: drop-shadow(0 0 20px #fff);
+            /* Animación Big Bang: Escala masiva y brillo */
+            animation: bigBangAnim 1.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            opacity: 0;
+        }
+
+        @keyframes bigBangAnim {
+            0% { transform: scale(0); opacity: 0; filter: brightness(1) blur(0px); }
+            20% { transform: scale(1); opacity: 1; filter: brightness(1); }
+            50% { transform: scale(1.5); opacity: 1; filter: brightness(5) blur(2px); }
+            100% { transform: scale(40); opacity: 0; filter: brightness(20) blur(30px); }
+        }
+
+        /* CONTENEDOR PRINCIPAL */
+        #ui {
+            opacity: 0;
+            transform: scale(1.1); /* Inicia un poco más grande para el efecto de entrada */
+            transition: opacity 0.8s ease-out, transform 1s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 950px;
+            margin: 0 auto;
+            padding: 80px 20px 20px 20px;
+            box-sizing: border-box;
+        }
+
+        #ui.show {
+            opacity: 1;
+            transform: scale(1);
         }
 
         #particles-js {
@@ -79,16 +83,6 @@
             left: 0;
             z-index: 1;
             pointer-events: none;
-        }
-
-        #ui {
-            position: relative;
-            z-index: 10;
-            width: 100%;
-            max-width: 950px;
-            margin: 0 auto;
-            padding: 80px 20px 20px 20px;
-            box-sizing: border-box;
         }
 
         .main-header-img {
@@ -112,10 +106,11 @@
         .card-wrapper {
             position: relative;
             cursor: pointer;
-            transition: transform 0.3s ease;
+            transition: transform 0.2s ease;
         }
 
         .card-wrapper:hover { transform: translateY(-5px); }
+        .card-wrapper:active { transform: scale(0.95); }
 
         .neon-frame {
             position: absolute;
@@ -151,22 +146,10 @@
             z-index: 1;
         }
 
-        .icon-shield {
-            width: 60px;
-            margin-bottom: 10px;
-            position: relative;
-            z-index: 2;
-        }
+        .icon-shield { width: 60px; margin-bottom: 10px; position: relative; z-index: 2; }
+        .card-content span { font-weight: bold; z-index: 2; font-size: 0.85rem; text-transform: uppercase; text-align: center; }
 
-        .card-content span {
-            font-weight: bold;
-            z-index: 2;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            text-align: center;
-        }
-
-        /* SECCIÓN JUEGO */
+        /* SECCIÓN DEL JUEGO */
         .futbolito-main-container {
             position: relative;
             width: 100%;
@@ -216,23 +199,12 @@
             margin: 4px;
         }
 
-        .btn-juega-ahora img {
-            width: 280px;
-            filter: drop-shadow(0 0 15px var(--can-red));
-        }
+        .btn-juega-ahora img { width: 280px; filter: drop-shadow(0 0 15px var(--can-red)); }
 
-        /* CONTENEDORES DE VIDEO */
-        .video-wrapper {
-            width: 100%;
-            margin: 0 auto 40px;
-            border-radius: 15px;
-            overflow: hidden;
-            isolation: isolate;
-        }
-
+        .video-wrapper { width: 100%; margin: 0 auto 40px; border-radius: 15px; overflow: hidden; isolation: isolate; }
         iframe { width: 100%; border: none; display: block; }
 
-        /* CLASES DE FONDO */
+        /* FONDOS */
         .bg-1 { background: url('https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/IMGS/Fondo_1.png'); }
         .bg-2 { background: url('https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/IMGS/Fondo_2.png'); }
         .bg-3 { background: url('https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/IMGS/Fondo_3.png'); }
@@ -246,9 +218,7 @@
         @media (max-width: 768px) {
             .grid-3 { grid-template-columns: 1fr; }
             .main-header-img { width: 100%; transform: none; }
-            .futbolito-main-container {
-                background: url('https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/IMGS/FutbolitomilenioMobi.png') no-repeat center/cover;
-            }
+            .futbolito-main-container { background: url('https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/IMGS/FutbolitomilenioMobi.png') no-repeat center/cover; }
             .bottom-controls { flex-direction: column; align-items: center; }
             .btn-juega-ahora img { width: 220px; }
         }
@@ -256,9 +226,8 @@
 </head>
 <body>
 
-    <div id="loader">
-        <img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/IMGS/Balon.png" class="balon-bounce">
-        <div class="loader-text">CARGANDO.....</div>
+    <div id="intro-overlay">
+        <img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/IMGS/Balon.png" class="balon-intro">
     </div>
 
     <div id="particles-js"></div>
@@ -270,15 +239,15 @@
         <img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/Logo2026M.png" class="main-header-img">
 
         <div class="grid-3">
-            <div class="card-wrapper card-mex" onclick="handleNav(this, 'https://www.milenio.com/futbol-internacional/mundial/calendario')">
+            <div class="card-wrapper card-mex" onmouseenter="playSelectSound()" onclick="handleNav(this, 'https://www.milenio.com/futbol-internacional/mundial/calendario')">
                 <div class="neon-frame"></div>
                 <div class="card-content bg-1"><img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/IMGS/escudo_calendario.png" class="icon-shield"><span>CALENDARIO</span></div>
             </div>
-            <div class="card-wrapper card-usa" onclick="handleNav(this, 'https://www.milenio.com/futbol-internacional/mundial/estadisticas')">
+            <div class="card-wrapper card-usa" onmouseenter="playSelectSound()" onclick="handleNav(this, 'https://www.milenio.com/futbol-internacional/mundial/estadisticas')">
                 <div class="neon-frame"></div>
                 <div class="card-content bg-2"><img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/IMGS/escudo_estadisticas.png" class="icon-shield"><span>ESTADÍSTICAS</span></div>
             </div>
-            <div class="card-wrapper card-can" onclick="handleNav(this, 'https://www.milenio.com/temas/mundial-2026')">
+            <div class="card-wrapper card-can" onmouseenter="playSelectSound()" onclick="handleNav(this, 'https://www.milenio.com/temas/mundial-2026')">
                 <div class="neon-frame"></div>
                 <div class="card-content bg-3"><img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/IMGS/escudo_noticias.png" class="icon-shield"><span>NOTICIAS</span></div>
             </div>
@@ -288,20 +257,20 @@
             <div class="game-header"><h2>FUTBOLITO MILENIO</h2><p>Solo para verdaderos aficionados.</p></div>
             <div class="bottom-controls">
                 <div class="trivia-box"><h3 id="question-text" style="font-size: 1rem;">¿QUIÉN MARCÓ EL PRIMER GOL?</h3><div id="options-container"></div></div>
-                <div class="action-container"><a href="https://stage2-front.milenio.com/deportes/mundialito-milenio" target="_top" class="btn-juega-ahora"><img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/IMGS/Juega_Ahora.png"></a></div>
+                <div class="action-container"><a href="https://stage2-front.milenio.com/deportes/mundialito-milenio" target="_top" class="btn-juega-ahora" onmouseenter="playSelectSound()"><img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/IMGS/Juega_Ahora.png"></a></div>
             </div>
         </div>
 
         <div class="grid-3">
-            <div class="card-wrapper card-mex" onclick="handleNav(this, 'https://www.milenio.com/deportes/futbol/estadios-mundial-2026')">
+            <div class="card-wrapper card-mex" onmouseenter="playSelectSound()" onclick="handleNav(this, 'https://www.milenio.com/deportes/futbol/estadios-mundial-2026')">
                 <div class="neon-frame"></div>
                 <div class="card-content bg-4"><img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/IMGS/escudo_estadio.png" class="icon-shield"><span>ESTADIOS</span></div>
             </div>
-            <div class="card-wrapper card-usa" onclick="handleNav(this, 'https://www.milenio.com/deportes/futbol/figuras-mundial-2026')">
+            <div class="card-wrapper card-usa" onmouseenter="playSelectSound()" onclick="handleNav(this, 'https://www.milenio.com/deportes/futbol/figuras-mundial-2026')">
                 <div class="neon-frame"></div>
                 <div class="card-content bg-5"><img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/IMGS/escudo_leyendas.png" class="icon-shield"><span>FIGURAS</span></div>
             </div>
-            <div class="card-wrapper card-can" onclick="handleNav(this, 'https://www.milenio.com/deportes/futbol/seleccion-mexicana')">
+            <div class="card-wrapper card-can" onmouseenter="playSelectSound()" onclick="handleNav(this, 'https://www.milenio.com/deportes/futbol/seleccion-mexicana')">
                 <div class="neon-frame"></div>
                 <div class="card-content bg-6"><img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/IMGS/escudo_leyendas.png" class="icon-shield"><span>FIGURAS MÉXICO</span></div>
             </div>
@@ -310,15 +279,15 @@
         <div class="video-wrapper"><iframe src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/SliderVideo.html" style="height: 480px;" scrolling="no"></iframe></div>
 
         <div class="grid-3">
-            <div class="card-wrapper card-mex" onclick="handleNav(this, 'https://www.milenio.com/deportes/futbol/historia-balones-mundiales')">
+            <div class="card-wrapper card-mex" onmouseenter="playSelectSound()" onclick="handleNav(this, 'https://www.milenio.com/deportes/futbol/historia-balones-mundiales')">
                 <div class="neon-frame"></div>
                 <div class="card-content bg-7"><img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/IMGS/escudo_corriendo.png" class="icon-shield"><span>BALONES</span></div>
             </div>
-            <div class="card-wrapper card-usa" onclick="handleNav(this, 'https://www.milenio.com/deportes/futbol/bracket-mundial-2026')">
+            <div class="card-wrapper card-usa" onmouseenter="playSelectSound()" onclick="handleNav(this, 'https://www.milenio.com/deportes/futbol/bracket-mundial-2026')">
                 <div class="neon-frame"></div>
                 <div class="card-content bg-8"><img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/IMGS/escudo_balones.png" class="icon-shield"><span>BRACKET</span></div>
             </div>
-            <div class="card-wrapper card-can" onclick="handleNav(this, 'https://www.milenio.com/deportes/futbol')">
+            <div class="card-wrapper card-can" onmouseenter="playSelectSound()" onclick="handleNav(this, 'https://www.milenio.com/deportes/futbol')">
                 <div class="neon-frame"></div>
                 <div class="card-content bg-9"><img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/IMGS/escudo_estrellas.png" class="icon-shield"><span>VER MÁS</span></div>
             </div>
@@ -331,23 +300,37 @@
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        function updateLoaderPos() {
-            const l = document.getElementById('loader');
-            if(l) l.style.top = (window.pageYOffset || document.documentElement.scrollTop) + 'px';
+        // SOLUCIÓN DEFINITIVA SCROLL ARRIBA
+        // Ejecutar inmediatamente antes de que el navegador intente restaurar posición
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
         }
-        window.addEventListener('scroll', updateLoaderPos);
-        updateLoaderPos();
+        window.scrollTo(0, 0);
 
-        window.addEventListener('load', () => { 
-            setTimeout(() => { 
-                document.getElementById('loader').classList.add('loader-hidden');
-                window.removeEventListener('scroll', updateLoaderPos);
-            }, 1000); 
+        window.addEventListener('load', () => {
+            // Refuerzo de scroll al cargar
+            setTimeout(() => window.scrollTo(0, 0), 10);
+            
+            // Lógica de transición
+            setTimeout(() => {
+                document.getElementById('intro-overlay').style.opacity = '0';
+                document.getElementById('ui').classList.add('show');
+                document.body.style.background = "transparent";
+                
+                setTimeout(() => { 
+                    document.getElementById('intro-overlay').style.display = 'none';
+                    window.scrollTo(0, 0); // Asegurar posición final
+                }, 600);
+            }, 1100); 
         });
 
         const audio = document.getElementById('select-audio');
         function playSelectSound() { if(audio) { audio.pause(); audio.currentTime=0; audio.play().catch(()=>{}); } }
-        function handleNav(element, url) { playSelectSound(); element.style.transform="scale(0.95)"; setTimeout(()=>{ window.top.location.href=url; }, 200); }
+        
+        function handleNav(element, url) { 
+            playSelectSound(); 
+            setTimeout(()=>{ window.top.location.href=url; }, 150); 
+        }
         
         particlesJS("particles-js", { "particles": { "number": { "value": 15 }, "color": { "value": "#00f2ff" }, "shape": { "type": "circle" }, "opacity": { "value": 0.3 }, "size": { "value": 4 }, "move": { "enable": true, "speed": 1.5 } } });
         
@@ -356,11 +339,15 @@
         function updateTrivia() {
             const container = document.getElementById('options-container');
             const item = triviaPool[curIdx];
+            if(!item) return;
             document.getElementById('question-text').innerText = item.q;
             container.innerHTML = "";
             item.opts.forEach(opt => {
-                const btn = document.createElement('button'); btn.className = 'option-btn'; btn.innerText = opt;
-                btn.onclick = () => { playSelectSound(); setTimeout(() => { window.top.location.href = "https://stage2-front.milenio.com/deportes/mundialito-milenio"; }, 300); };
+                const btn = document.createElement('button'); 
+                btn.className = 'option-btn'; 
+                btn.innerText = opt;
+                btn.onmouseenter = () => playSelectSound();
+                btn.onclick = () => { playSelectSound(); setTimeout(() => { window.top.location.href = "https://stage2-front.milenio.com/deportes/mundialito-milenio"; }, 150); };
                 container.appendChild(btn);
             });
             curIdx = (curIdx + 1) % triviaPool.length;
