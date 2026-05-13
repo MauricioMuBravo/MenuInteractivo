@@ -40,6 +40,7 @@
         #intro-overlay { 
             position: fixed; inset: 0; background: #000; z-index: 100000; 
             display: flex; justify-content: center; align-items: center; pointer-events: none; 
+            transition: 0.8s;
         }
         .balon-intro { 
             width: 90px; filter: drop-shadow(0 0 30px #fff); 
@@ -77,10 +78,10 @@
         .icon-shield { width: 65px; margin-bottom: 12px; position: relative; z-index: 2; }
         .card-content span { font-weight: 900; z-index: 2; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1.5px; text-shadow: 2px 2px 4px #000; }
 
-        /* CONTAINERS & SCROLL */
-        .ext-container { width: 100%; background: rgba(0,0,0,0.4); margin-bottom: 50px; border-radius: 30px; overflow: hidden; border: 1px solid rgba(255,255,255,0.15); }
-        .h-video { height: 460px; }
-        .v-reels { height: 530px; }
+        /* CONTAINERS (AJUSTE DE ALTURA SEGÚN CAPTURAS) */
+        .ext-container { width: 100%; background: rgba(0,0,0,0.5); margin-bottom: 50px; border-radius: 30px; overflow: hidden; border: 1px solid rgba(255,255,255,0.15); backdrop-filter: blur(10px); }
+        .h-video { height: 460px; } /* Altura fija para el slider de video/playlist */
+        .v-reels { height: 520px; } /* Altura reducida para que se vea como el cintillo de la captura */
         iframe { width: 100%; height: 100%; border: none; display: block; }
 
         /* FUTBOLITO */
@@ -119,7 +120,8 @@
 
         @media (max-width: 768px) {
             .grid-3 { grid-template-columns: 1fr; }
-            .h-video { height: 620px; }
+            .h-video { height: 600px; } /* Ajuste para que se vea el playlist abajo en móvil */
+            .v-reels { height: 180px; } 
             .futbolito-box { min-height: 550px; background-image: url('https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/IMGS/FutbolitomilenioMobi.png'); }
             .bottom-row { flex-direction: column; }
         }
@@ -166,7 +168,7 @@
         </div>
 
         <div class="ext-container h-video">
-            <iframe src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/SliderVideo.html" scrolling="yes"></iframe>
+            <iframe src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/SliderVideo.html" scrolling="no"></iframe>
         </div>
 
         <div class="grid-3">
