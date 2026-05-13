@@ -107,6 +107,22 @@
         .option-btn:hover { background: #fff; color: #000; }
         .btn-juega img { width: 300px; transition: 0.3s; }
 
+        /* FOOTER / CREDITOS */
+        .footer-credits { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 40px 20px; 
+            width: 100%; 
+            box-sizing: border-box;
+        }
+        .img-creditos { 
+            width: 100%; 
+            max-width: 400px; 
+            height: auto; 
+            display: block; 
+        }
+
         /* BACKGROUNDS */
         .bg-1 { background-image: url('https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/IMGS/Fondo_1.png'); }
         .bg-2 { background-image: url('https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/IMGS/Fondo_2.png'); }
@@ -121,7 +137,7 @@
         @media (max-width: 768px) {
             .grid-3 { grid-template-columns: 1fr; }
             .h-video { height: 620px; overflow-y: auto; } 
-            .v-reels { height: 540px; } 
+            .v-reels { height: 550px; } 
             
             .futbolito-box { 
                 min-height: 600px; 
@@ -130,12 +146,10 @@
                 justify-content: flex-start; 
             }
             .game-header h2 { font-size: 1.8rem; }
-            .game-header p { font-size: 0.9rem !important; }
             
-            /* BAJAR TRIVIA Y BOTÓN JUEGA AHORA */
             .bottom-row { 
                 flex-direction: column; 
-                margin-top: 195px; /* Valor aumentado para bajar todo el bloque de la trivia */
+                margin-top: 160px; 
                 gap: 20px; 
             }
             
@@ -144,12 +158,11 @@
                 max-width: 300px; 
                 padding: 15px; 
                 margin: 0 auto; 
-                background: rgba(0,0,0,0.85); /* Mayor opacidad para legibilidad */
+                background: rgba(0,0,0,0.85);
             }
-            .trivia-container h3 { font-size: 0.9rem; }
-            .option-btn { font-size: 0.65rem; min-width: 80px; padding: 8px 12px; }
             
             .btn-juega img { width: 190px; }
+            .img-creditos { max-width: 280px; } /* Un poco más pequeña en móvil para asegurar centrado */
         }
     </style>
 </head>
@@ -247,7 +260,9 @@
             <iframe src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/Shorts/MIX/Videos-verticalesMenu.html" scrolling="no"></iframe>
         </div>
 
-        <div style="text-align: center; padding: 40px;"><img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/CreditosInteractivo.png" width="400"></div>
+        <div class="footer-credits">
+            <img src="https://cdnpublicidad.milenio.com/2026/PublicidadOperaciones/MundialitoMilenio/Interactivo/CreditosInteractivo.png" class="img-creditos">
+        </div>
     </div>
 
     <script>
